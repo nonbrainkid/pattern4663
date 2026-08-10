@@ -45,9 +45,18 @@ test("server-renders the production PATTERN landing page", async () => {
   assert.match(html, /pattern_og_1200x630_v01\.png/);
   assert.match(html, /FIELD 01 \/ ACTIVE/);
   assert.match(html, /ACCOUNT LINK PENDING/);
+  assert.match(html, /PATTERN ATLAS/);
+  assert.match(html, /ORDER HIDES EVERYWHERE\./);
+  assert.match(html, /ILLUSTRATIVE \/ NOT MARKET DATA/);
+  assert.match(html, /PATTERN FOUND (?:≠|&#x2260;) FUTURE GUARANTEED/);
+  assert.doesNotMatch(html, /we compared|winner pattern/i);
   assert.doesNotMatch(html, /FIELD 01 \/ LIVE/);
   assert.doesNotMatch(html, /FOLLOW PATTERN/);
-  assert.match(html, /<canvas[^>]*aria-hidden="true"|aria-hidden="true"[^>]*>[\s\S]*<canvas/i);
+  const canvasTags = html.match(/<canvas\b[^>]*>/gi) ?? [];
+  assert.equal(canvasTags.length, 3);
+  for (const canvasTag of canvasTags) {
+    assert.match(canvasTag, /\baria-hidden="true"/i);
+  }
   assert.doesNotMatch(html, /codex-preview|react-loading-skeleton|Building your site/i);
 });
 

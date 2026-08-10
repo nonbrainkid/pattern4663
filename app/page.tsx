@@ -1,5 +1,6 @@
 import type { CSSProperties } from "react";
 import { PatternMark } from "./_components/PatternMark";
+import { PatternAtlas } from "./_components/PatternAtlas";
 import { SignalField } from "./_components/SignalField";
 
 const LAB_NOISE = Array.from({ length: 36 }, (_, index) => {
@@ -99,6 +100,7 @@ export default function Home() {
           <nav className="site-nav" aria-label="Primary navigation">
             <a href="#thesis">THESIS</a>
             <a href="#lab">LAB</a>
+            <a href="#atlas">ATLAS</a>
             <a href="#origin">ORIGIN</a>
           </nav>
 
@@ -235,6 +237,8 @@ export default function Home() {
             </div>
           </div>
         </section>
+
+        <PatternAtlas />
 
         <section className="origin section" id="origin" aria-labelledby="origin-title">
           <div className="page-width origin__grid reveal">
