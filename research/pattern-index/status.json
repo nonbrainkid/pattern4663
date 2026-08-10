@@ -1,0 +1,17 @@
+{
+  "schema_version": "0.1.0",
+  "as_of": "2026-08-10",
+  "study_status": "protocol_draft",
+  "real_dataset_collected": false,
+  "result_status": "no_result_claimed",
+  "result_claimed": false,
+  "credentials": {
+    "DUNE_API_KEY": "missing",
+    "COINGECKO_API_KEY": "missing",
+    "COINGECKO_DEMO_API_KEY": "missing",
+    "DEXSCREENER_API_KEY": "missing"
+  },
+  "available_data": ["synthetic_demo_only"],
+  "next_blocker": "Lock the protocol and quote whitelist, then configure DUNE_API_KEY and execute an audited saved query."
+}
+

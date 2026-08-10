@@ -2,6 +2,7 @@ import type { CSSProperties } from "react";
 import { PatternMark } from "./_components/PatternMark";
 import { PatternAtlas } from "./_components/PatternAtlas";
 import { SignalField } from "./_components/SignalField";
+import { contractLabel, project, statusLabel } from "./_data/project";
 
 const LAB_NOISE = Array.from({ length: 36 }, (_, index) => {
   const column = index % 9;
@@ -84,6 +85,8 @@ function RecursionDiagram() {
 }
 
 export default function Home() {
+  const chainName = project.chainName.toUpperCase();
+
   return (
     <div className="site-shell" id="top">
       <a className="skip-link" href="#main-content">
@@ -92,9 +95,9 @@ export default function Home() {
 
       <header className="site-header">
         <div className="site-header__inner page-width">
-          <a className="brand" href="#top" aria-label="PATTERN, back to top">
+          <a className="brand" href="#top" aria-label={`${project.name}, back to top`}>
             <PatternMark compact />
-            <span className="brand__wordmark">PATTERN</span>
+            <span className="brand__wordmark">{project.name}</span>
           </a>
 
           <nav className="site-nav" aria-label="Primary navigation">
@@ -106,7 +109,7 @@ export default function Home() {
 
           <p className="site-header__signal">
             <span>SIGNAL</span>
-            <strong>4663</strong>
+            <strong>{project.chainId}</strong>
           </p>
         </div>
       </header>
@@ -116,8 +119,9 @@ export default function Home() {
           <div className="hero__inner page-width">
             <div className="hero__copy">
               <p className="hero__eyebrow">
-                <span>PATTERN</span>
-                <span>CHAIN 4663</span>
+                <span>{project.name}</span>
+                <span>SYMBOL / {project.symbol}</span>
+                <span>CHAIN {project.chainId}</span>
                 <span>INDEPENDENT</span>
               </p>
 
@@ -146,7 +150,7 @@ export default function Home() {
 
               <p className="status-chip">
                 <span aria-hidden="true" />
-                PRE-LAUNCH / CONTRACT NOT PUBLISHED
+                {statusLabel()} / CONTRACT {contractLabel()}
               </p>
             </div>
 
@@ -215,7 +219,7 @@ export default function Home() {
 
               <article className="lab-card">
                 <header className="lab-card__header">
-                  <p><span>02 /</span> SEQUENCE 4663</p>
+                  <p><span>02 /</span> SEQUENCE {project.chainId}</p>
                   <span className="lab-card__state">LOOP</span>
                 </header>
                 <SequenceDiagram />
@@ -246,7 +250,7 @@ export default function Home() {
               <SectionLabel>ORIGIN</SectionLabel>
               <h2 className="section-title" id="origin-title">
                 DESIGNED FOR
-                <span>CHAIN 4663.</span>
+                <span>CHAIN {project.chainId}.</span>
               </h2>
               <p>
                 No mystery addresses. The canonical contract will appear here and on
@@ -260,10 +264,11 @@ export default function Home() {
                 <span>REV / 00</span>
               </div>
               <dl>
-                <div><dt>NETWORK</dt><dd>ROBINHOOD CHAIN</dd></div>
-                <div><dt>CHAIN ID</dt><dd className="origin__number">4663</dd></div>
-                <div><dt>STATUS</dt><dd><span className="record-status">PRE-LAUNCH</span></dd></div>
-                <div><dt>CONTRACT</dt><dd className="origin__muted">NOT PUBLISHED</dd></div>
+                <div><dt>NETWORK</dt><dd>{chainName}</dd></div>
+                <div><dt>CHAIN ID</dt><dd className="origin__number">{project.chainId}</dd></div>
+                <div><dt>SYMBOL</dt><dd>{project.symbol}</dd></div>
+                <div><dt>STATUS</dt><dd><span className="record-status">{statusLabel()}</span></dd></div>
+                <div><dt>CONTRACT</dt><dd className="origin__muted">{contractLabel()}</dd></div>
               </dl>
               <p className="origin__checksum" aria-hidden="true">
                 VERIFY_SOURCE / VERIFY_CHAIN / VERIFY_ADDRESS
@@ -277,7 +282,7 @@ export default function Home() {
             <PatternMark />
           </div>
           <div className="page-width signal-cta__inner reveal">
-            <SectionLabel>SIGNAL / 4663</SectionLabel>
+            <SectionLabel>SIGNAL / {project.chainId}</SectionLabel>
             <h2 className="signal-cta__title" id="signal-title">
               ONE SIGNAL.
               <span>ONE CONTRACT.</span>
@@ -286,17 +291,30 @@ export default function Home() {
               Follow the project account. Verify the address. Then decide for yourself.
             </p>
             <div className="signal-cta__actions">
-              <button
-                className="action action--primary action--pending"
-                disabled
-                type="button"
-              >
-                <span>ACCOUNT LINK PENDING</span>
-                <span className="action__arrow" aria-hidden="true">··</span>
-              </button>
-              <span className="action action--disabled" aria-disabled="true">
-                CONTRACT NOT LIVE
-              </span>
+              {project.xUrl ? (
+                <a className="action action--primary" href={project.xUrl}>
+                  <span>FOLLOW {project.name}</span>
+                  <span className="action__arrow" aria-hidden="true">→</span>
+                </a>
+              ) : (
+                <button
+                  className="action action--primary action--pending"
+                  disabled
+                  type="button"
+                >
+                  <span>ACCOUNT LINK PENDING</span>
+                  <span className="action__arrow" aria-hidden="true">··</span>
+                </button>
+              )}
+              {project.contractAddress && project.explorerUrl ? (
+                <a className="action action--quiet" href={project.explorerUrl}>
+                  VIEW VERIFIED CONTRACT
+                </a>
+              ) : (
+                <span className="action action--disabled" aria-disabled="true">
+                  CONTRACT NOT LIVE
+                </span>
+              )}
             </div>
           </div>
         </section>
@@ -305,10 +323,8 @@ export default function Home() {
           <div className="page-width disclosure__inner">
             <p className="disclosure__label">DISCLOSURE / READ BEFORE INTERACTING</p>
             <p>
-              PATTERN is an independent community project. Not affiliated with or
-              endorsed by Robinhood Markets, Inc. No promise of profit, utility, or
-              listing. Crypto assets are risky. Verify the canonical contract address
-              before interacting.
+              {project.disclosures.independence} {project.disclosures.marketRisk}{" "}
+              {project.disclosures.verification}
             </p>
           </div>
         </aside>
@@ -316,12 +332,12 @@ export default function Home() {
 
       <footer className="site-footer">
         <div className="page-width site-footer__inner">
-          <a className="brand" href="#top" aria-label="PATTERN, back to top">
+          <a className="brand" href="#top" aria-label={`${project.name}, back to top`}>
             <PatternMark compact />
-            <span className="brand__wordmark">PATTERN</span>
+            <span className="brand__wordmark">{project.name}</span>
           </a>
           <p>SEE STRUCTURE. VERIFY EVERYTHING.</p>
-          <p className="site-footer__chain">CHAIN / 4663</p>
+          <p className="site-footer__chain">CHAIN / {project.chainId}</p>
         </div>
       </footer>
     </div>

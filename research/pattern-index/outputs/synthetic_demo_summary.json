@@ -1,0 +1,55 @@
+{
+  "feature_columns": [
+    "active_hour_buckets",
+    "buy_count",
+    "buy_volume_ratio",
+    "feature_cutoff_at",
+    "feature_cutoff_hours",
+    "initial_liquidity_usd",
+    "last_liquidity_usd",
+    "liquidity_change_ratio",
+    "sell_count",
+    "swap_count",
+    "unique_traders",
+    "unknown_side_count",
+    "volume_usd"
+  ],
+  "feature_cutoff_hours": 6,
+  "input": "synthetic_demo.jsonl",
+  "market_data": false,
+  "record_count": 8,
+  "result_status": "no_result_claimed",
+  "schema_version": "0.1.0",
+  "split_counts": {
+    "holdout": 2,
+    "train": 5,
+    "validation": 1
+  },
+  "study_status": "protocol_draft",
+  "synthetic": true,
+  "synthetic_baseline": {
+    "holdout": {
+      "accuracy": 0.5,
+      "brier_score": 0.26,
+      "evaluation_n": 2,
+      "evaluation_positive": 1,
+      "log_loss": 0.7135581778200728,
+      "predicted_class": 0,
+      "train_n": 5,
+      "train_positive": 2,
+      "train_prevalence": 0.4
+    },
+    "validation": {
+      "accuracy": 0.0,
+      "brier_score": 0.36,
+      "evaluation_n": 1,
+      "evaluation_positive": 1,
+      "log_loss": 0.916290731874155,
+      "predicted_class": 0,
+      "train_n": 5,
+      "train_positive": 2,
+      "train_prevalence": 0.4
+    }
+  },
+  "warning": "PIPELINE DEMONSTRATION ONLY \u2014 SYNTHETIC DATA, NOT MARKET EVIDENCE"
+}

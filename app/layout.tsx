@@ -1,11 +1,12 @@
 import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { headers } from "next/headers";
+import { project } from "./_data/project";
 import "./globals.css";
 
-const TITLE = "PATTERN \u2014 See the Pattern";
+const TITLE = `${project.name} \u2014 See the Pattern`;
 const DESCRIPTION =
-  "Culture coin for people who see structure in the noise. Designed for chain 4663.";
+  `${project.name} ($${project.symbol}) is a pre-launch culture coin for people who see structure in the noise. Designed for ${project.chainName} (${project.chainId}).`;
 const OG_IMAGE_PATH = "/brand/pattern_og_1200x630_v01.png";
 const LOCAL_FALLBACK_ORIGIN = new URL("http://localhost:3000");
 const VALID_HOST = /^(?:\[[0-9a-f:.]+\]|[a-z0-9.-]+)(?::\d{1,5})?$/i;
@@ -56,13 +57,18 @@ function requestOrigin(headerStore: { get(name: string): string | null }) {
 
 export async function generateMetadata(): Promise<Metadata> {
   const requestHeaders = await headers();
-  const metadataBase = requestOrigin(requestHeaders);
+  const metadataBase = project.canonicalUrl
+    ? new URL(project.canonicalUrl)
+    : requestOrigin(requestHeaders);
   const imageUrl = new URL(OG_IMAGE_PATH, metadataBase).href;
 
   return {
     metadataBase,
     title: TITLE,
     description: DESCRIPTION,
+    ...(project.canonicalUrl
+      ? { alternates: { canonical: project.canonicalUrl } }
+      : {}),
     icons: {
       icon: "/favicon.svg",
       shortcut: "/favicon.svg",
@@ -76,7 +82,7 @@ export async function generateMetadata(): Promise<Metadata> {
           url: imageUrl,
           width: 1200,
           height: 630,
-          alt: "PATTERN \u2014 signal emerging from noise",
+          alt: `${project.name} \u2014 signal emerging from noise`,
         },
       ],
     },

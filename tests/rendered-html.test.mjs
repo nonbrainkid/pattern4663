@@ -36,8 +36,10 @@ test("server-renders the production PATTERN landing page", async () => {
   const html = await response.text();
   assert.match(html, /<title>PATTERN (?:\u2014|&#x2014;|&mdash;) See the Pattern<\/title>/i);
   assert.match(html, /SEE THE[\s\S]*PATTERN\./);
+  assert.match(html, /SYMBOL \/[\s\S]{0,80}P4663/);
+  assert.match(html, /\$P4663/);
   assert.match(html, /Everything is noise until you see the pattern\./);
-  assert.match(html, /PRE-LAUNCH \/ CONTRACT NOT PUBLISHED/);
+  assert.match(html, /PRE-LAUNCH[\s\S]{0,80}\/ CONTRACT[\s\S]{0,80}NOT PUBLISHED/);
   assert.match(html, /ROBINHOOD CHAIN/);
   assert.match(html, /Not affiliated with or endorsed by Robinhood Markets, Inc\./);
   assert.match(html, /No promise of profit, utility, or listing\./);
@@ -45,6 +47,11 @@ test("server-renders the production PATTERN landing page", async () => {
   assert.match(html, /pattern_og_1200x630_v01\.png/);
   assert.match(html, /FIELD 01 \/ ACTIVE/);
   assert.match(html, /ACCOUNT LINK PENDING/);
+  assert.match(
+    html,
+    /<button[^>]*disabled[^>]*>[\s\S]*?ACCOUNT LINK PENDING[\s\S]*?<\/button>/i,
+  );
+  assert.match(html, /CONTRACT NOT LIVE/);
   assert.match(html, /PATTERN ATLAS/);
   assert.match(html, /ORDER HIDES EVERYWHERE\./);
   assert.match(html, /ILLUSTRATIVE \/ NOT MARKET DATA/);
@@ -52,6 +59,10 @@ test("server-renders the production PATTERN landing page", async () => {
   assert.doesNotMatch(html, /we compared|winner pattern/i);
   assert.doesNotMatch(html, /FIELD 01 \/ LIVE/);
   assert.doesNotMatch(html, /FOLLOW PATTERN/);
+  assert.doesNotMatch(
+    html,
+    /(?:contract|token)\s+(?:is\s+)?(?:live|born)|verified contract address|0x[a-f0-9]{40}/i,
+  );
   const canvasTags = html.match(/<canvas\b[^>]*>/gi) ?? [];
   assert.equal(canvasTags.length, 3);
   for (const canvasTag of canvasTags) {
@@ -83,15 +94,23 @@ test("uses the forwarded request origin for absolute social images", async () =>
 });
 
 test("removes the starter preview and keeps motion progressive", async () => {
-  const [page, layout, signalField, packageJson] = await Promise.all([
+  const [page, layout, project, signalField, packageJson] = await Promise.all([
     readFile(new URL("../app/page.tsx", import.meta.url), "utf8"),
     readFile(new URL("../app/layout.tsx", import.meta.url), "utf8"),
+    readFile(new URL("../app/_data/project.ts", import.meta.url), "utf8"),
     readFile(new URL("../app/_components/SignalField.tsx", import.meta.url), "utf8"),
     readFile(new URL("../package.json", import.meta.url), "utf8"),
   ]);
 
   assert.doesNotMatch(page, /["']use client["']/);
   assert.match(page, /<SignalField \/>/);
+  assert.match(page, /from "\.\/_data\/project"/);
+  assert.match(layout, /from "\.\/_data\/project"/);
+  assert.match(project, /name:\s*"PATTERN"/);
+  assert.match(project, /symbol:\s*"P4663"/);
+  assert.match(project, /chainId:\s*4663/);
+  assert.match(project, /status:\s*"prelaunch"/);
+  assert.match(project, /contractAddress:\s*null/);
   assert.match(layout, /themeColor:\s*"#07090C"/);
   assert.match(layout, /export async function generateMetadata/);
   assert.match(layout, /x-forwarded-host/);
@@ -117,4 +136,29 @@ test("removes the starter preview and keeps motion progressive", async () => {
   ]);
 
   await access(new URL("public/favicon.svg", projectRoot));
+});
+
+test("publishes a truthful machine-readable prelaunch manifest", async () => {
+  const manifest = JSON.parse(
+    await readFile(new URL("../public/token.json", import.meta.url), "utf8"),
+  );
+
+  assert.equal(manifest.name, "PATTERN");
+  assert.equal(manifest.symbol, "P4663");
+  assert.equal(manifest.chainId, 4663);
+  assert.equal(manifest.chain, "Robinhood Chain");
+  assert.equal(manifest.status, "prelaunch");
+  assert.equal(manifest.contractAddress, null);
+  assert.equal(manifest.updated, "2026-08-10");
+  assert.deepEqual(manifest.officialLinks, {
+    website: null,
+    x: null,
+    explorer: null,
+    launchVenue: null,
+  });
+  assert.match(manifest.disclosure, /not deployed or published/i);
+  assert.doesNotMatch(
+    JSON.stringify(manifest),
+    /(?:contract|token)\s+(?:is\s+)?(?:live|born)|verified contract address|0x[a-f0-9]{40}/i,
+  );
 });

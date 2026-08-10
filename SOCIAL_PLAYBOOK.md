@@ -11,7 +11,7 @@ PATTERN is pre-launch. Until deployment is verified, do not publish a contract a
 | Field | Production value | Asset or rule |
 | --- | --- | --- |
 | Display name | `PATTERN` | Exact spelling; no ticker appended |
-| Handle priority | `@pattern4663` → `@seethepattern` → `@ptrn4663` | Availability and impersonation conflicts must be checked at reservation time; this list does not claim ownership |
+| Handle priority | `@pattern4663` → `@pattern_on4663` → `@see_thepattern` | Availability and impersonation conflicts must be checked at reservation time; this list does not claim ownership |
 | Pre-launch bio | `Culture coin for people who see structure in the noise. Designed for chain 4663. Independent. Not affiliated with Robinhood.` | 124 characters including spaces |
 | Post-launch bio | `Culture coin for people who see structure in the noise. Born on chain 4663. Independent. Not affiliated with Robinhood.` | 119 characters; use only after verified deployment |
 | Location | `CHAIN 4663` | Keep uppercase |

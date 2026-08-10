@@ -1,0 +1,33 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://pattern.invalid/schema/study-manifest.schema.json",
+  "title": "PATTERN INDEX study manifest v0.1.0",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version", "generated_at", "study_status", "result_status",
+    "parameters", "inputs", "study_id"
+  ],
+  "properties": {
+    "schema_version": {"const": "0.1.0"},
+    "generated_at": {"type": "string", "format": "date-time"},
+    "study_status": {"enum": ["protocol_draft", "protocol_locked", "data_collected", "analysis_complete"]},
+    "result_status": {"enum": ["no_result_claimed", "null_result", "result_available"]},
+    "parameters": {"type": "object"},
+    "inputs": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["path", "sha256", "bytes"],
+        "properties": {
+          "path": {"type": "string", "minLength": 1},
+          "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+          "bytes": {"type": "integer", "minimum": 0}
+        }
+      }
+    },
+    "study_id": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"}
+  }
+}
+
