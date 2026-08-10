@@ -1,0 +1,111 @@
+import type { Metadata, Viewport } from "next";
+import { Geist, Geist_Mono } from "next/font/google";
+import { headers } from "next/headers";
+import "./globals.css";
+
+const TITLE = "PATTERN \u2014 See the Pattern";
+const DESCRIPTION =
+  "Culture coin for people who see structure in the noise. Designed for chain 4663.";
+const OG_IMAGE_PATH = "/brand/pattern_og_1200x630_v01.png";
+const LOCAL_FALLBACK_ORIGIN = new URL("http://localhost:3000");
+const VALID_HOST = /^(?:\[[0-9a-f:.]+\]|[a-z0-9.-]+)(?::\d{1,5})?$/i;
+
+const geistSans = Geist({
+  variable: "--font-geist-sans",
+  subsets: ["latin"],
+});
+
+const geistMono = Geist_Mono({
+  variable: "--font-geist-mono",
+  subsets: ["latin"],
+});
+
+function firstForwardedValue(value: string | null) {
+  return value?.split(",", 1)[0]?.trim() || null;
+}
+
+function isLocalHostname(host: string) {
+  const hostname = host.replace(/^\[|\](?::\d+)?$|:\d+$/g, "").toLowerCase();
+  return hostname === "localhost" || hostname === "127.0.0.1" || hostname === "::1";
+}
+
+function requestOrigin(headerStore: { get(name: string): string | null }) {
+  const host =
+    firstForwardedValue(headerStore.get("x-forwarded-host")) ??
+    firstForwardedValue(headerStore.get("host"));
+
+  if (!host || !VALID_HOST.test(host)) return LOCAL_FALLBACK_ORIGIN;
+
+  const forwardedProtocol = firstForwardedValue(
+    headerStore.get("x-forwarded-proto"),
+  )?.toLowerCase();
+  const protocol =
+    forwardedProtocol === "http" || forwardedProtocol === "https"
+      ? forwardedProtocol
+      : isLocalHostname(host)
+        ? "http"
+        : "https";
+
+  try {
+    const origin = new URL(`${protocol}://${host}`);
+    return new URL(origin.origin);
+  } catch {
+    return LOCAL_FALLBACK_ORIGIN;
+  }
+}
+
+export async function generateMetadata(): Promise<Metadata> {
+  const requestHeaders = await headers();
+  const metadataBase = requestOrigin(requestHeaders);
+  const imageUrl = new URL(OG_IMAGE_PATH, metadataBase).href;
+
+  return {
+    metadataBase,
+    title: TITLE,
+    description: DESCRIPTION,
+    icons: {
+      icon: "/favicon.svg",
+      shortcut: "/favicon.svg",
+    },
+    openGraph: {
+      title: TITLE,
+      description: DESCRIPTION,
+      type: "website",
+      images: [
+        {
+          url: imageUrl,
+          width: 1200,
+          height: 630,
+          alt: "PATTERN \u2014 signal emerging from noise",
+        },
+      ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: TITLE,
+      description: DESCRIPTION,
+      images: [imageUrl],
+    },
+  };
+}
+
+export const viewport: Viewport = {
+  colorScheme: "dark",
+  themeColor: "#07090C",
+};
+
+export default function RootLayout({
+  children,
+}: Readonly<{
+  children: React.ReactNode;
+}>) {
+  return (
+    <html lang="en" className="scroll-smooth">
+      <body
+        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+      >
+        {children}
+      </body>
+    </html>
+  );
+}
