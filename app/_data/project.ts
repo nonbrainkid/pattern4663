@@ -14,6 +14,7 @@ export type ProjectConfig = Readonly<{
   chainId: number;
   status: LaunchStatus;
   contractAddress: string | null;
+  xHandle: string | null;
   xUrl: string | null;
   canonicalUrl: string | null;
   launchVenue: string | null;
@@ -28,7 +29,8 @@ export const project: ProjectConfig = Object.freeze({
   chainId: 4663,
   status: "prelaunch",
   contractAddress: null,
-  xUrl: null,
+  xHandle: "@Pattern4663",
+  xUrl: "https://x.com/Pattern4663",
   canonicalUrl: null,
   launchVenue: null,
   explorerUrl: null,

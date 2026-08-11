@@ -142,8 +142,16 @@ export default function Home() {
                   <span>ENTER THE LAB</span>
                   <span className="action__arrow" aria-hidden="true">↘</span>
                 </a>
-                <a className="action action--quiet" href="#signal">
-                  <span>FOLLOW THE SIGNAL</span>
+                <a
+                  className="action action--quiet"
+                  href={project.xUrl ?? "#signal"}
+                  {...(project.xUrl
+                    ? { target: "_blank", rel: "noopener noreferrer" }
+                    : {})}
+                >
+                  <span>
+                    {project.xHandle ? `FOLLOW ${project.xHandle.toUpperCase()}` : "FOLLOW THE SIGNAL"}
+                  </span>
                   <span className="action__arrow" aria-hidden="true">→</span>
                 </a>
               </div>
@@ -292,8 +300,13 @@ export default function Home() {
             </p>
             <div className="signal-cta__actions">
               {project.xUrl ? (
-                <a className="action action--primary" href={project.xUrl}>
-                  <span>FOLLOW {project.name}</span>
+                <a
+                  className="action action--primary"
+                  href={project.xUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <span>FOLLOW {project.xHandle ?? project.name}</span>
                   <span className="action__arrow" aria-hidden="true">→</span>
                 </a>
               ) : (

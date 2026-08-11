@@ -1,6 +1,6 @@
 # PATTERN Token Launch Playbook
 
-Production copy and publishing controls for an independent culture coin designed for Robinhood Chain. Status at the time of writing: **PRE-LAUNCH**. No contract address, canonical custom domain, or verified X handle exists yet.
+Production copy and publishing controls for an independent culture coin designed for Robinhood Chain. Status at the time of writing: **PRE-LAUNCH**. The official X account is `@Pattern4663`; no contract address or canonical custom domain exists yet.
 
 **Research checked:** 2026-08-10 (Asia/Almaty). Search results are a point-in-time discovery check, not trademark clearance, exchange approval, or a guarantee that a name cannot be copied later.
 
@@ -36,15 +36,9 @@ Production copy and publishing controls for an independent culture coin designed
 
 > PATTERN / $P4663 • Chain 4663 • Independent; not endorsed by Robinhood. Verify CA on the canonical site and explorer. DMs are never canonical.
 
-### X handle priority
+### Official X account
 
-Reserve and use the first genuinely available handle in this order:
-
-1. `@pattern4663`
-2. `@pattern_on4663`
-3. `@see_thepattern`
-
-Direct X URL requests for all three returned a 404 during the 2026-08-10 check. That is **not proof of availability**: X responses may depend on authentication, suspension state, caching, or reservation rules. Confirm inside the authenticated X signup/rename flow immediately before reservation. Never print a candidate handle on launch art until the account is controlled and recovery is configured.
+The founder supplied `https://x.com/Pattern4663` as the controlled project account on 2026-08-11. Use `@Pattern4663` consistently. Keep recovery access, strong authentication, and impersonation monitoring configured; the handle alone is never proof of the canonical token contract.
 
 ### Collision decision
 

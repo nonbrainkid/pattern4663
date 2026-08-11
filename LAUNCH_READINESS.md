@@ -12,17 +12,18 @@ The current website and manifest intentionally describe a prelaunch project. Pub
 | Launch status | `prelaunch` | Contract, links, venue, and public-access approval are incomplete | `app/_data/project.ts`, `public/token.json` |
 | Contract address | `null` / not published | Deploy, verify source, and complete a four-eyes address check | `app/_data/project.ts`, `public/token.json` |
 | Explorer URL | `null` | Verified contract page does not exist yet | `app/_data/project.ts`, `public/token.json` |
-| X account | `null` | Reserve the handle, secure it, and prove project control | `app/_data/project.ts`, `public/token.json`, public bios |
+| X account | `@Pattern4663` | Account supplied by the founder; strong authentication, recovery, and ongoing control checks remain required | `app/_data/project.ts`, `public/token.json`, public bios |
 | Canonical domain | `null` | Acquire domain, configure HTTPS, and verify control | `app/_data/project.ts`, `public/token.json`, hosting configuration |
 | Launch venue | `null` | Venue and exact official URL are not confirmed | `app/_data/project.ts`, `public/token.json` |
-| Public access | Private deployment | Explicit founder approval and final release review required | Hosting access controls |
+| Public access | Vercel deployment configured | Confirm the production URL and obtain explicit founder approval before treating the token launch as public | Hosting access controls |
 | Social preview | Request-host absolute URL | Must be verified against the final HTTPS canonical host | `app/_data/project.ts`, deployed page metadata |
 | Scam monitoring | Not established | Assign monitoring, reporting, and impersonation-response owners | Launch operations runbook |
 
 ## Go-live checklist
 
 - [ ] Approve the documented name and ticker collision review for launch, record the decision, and schedule periodic rechecks; do not describe either identifier as globally unique.
-- [ ] Reserve the official X handle, enable strong account security, and verify project control.
+- [x] Add the founder-supplied official X handle to the website and manifest.
+- [ ] Enable strong account security, verify recovery access, and document project control.
 - [ ] Acquire and configure the custom canonical domain with HTTPS.
 - [ ] Deploy the intended contract on Robinhood Chain ID `4663` from the approved wallet.
 - [ ] Verify the contract source and constructor parameters on the explorer.

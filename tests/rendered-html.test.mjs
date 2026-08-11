@@ -46,11 +46,11 @@ test("server-renders the production PATTERN landing page", async () => {
   assert.match(html, /SEE STRUCTURE\. VERIFY EVERYTHING\./);
   assert.match(html, /pattern_og_1200x630_v01\.png/);
   assert.match(html, /FIELD 01 \/ ACTIVE/);
-  assert.match(html, /ACCOUNT LINK PENDING/);
-  assert.match(
-    html,
-    /<button[^>]*disabled[^>]*>[\s\S]*?ACCOUNT LINK PENDING[\s\S]*?<\/button>/i,
-  );
+  assert.match(html, /FOLLOW @PATTERN4663/i);
+  assert.match(html, /href="https:\/\/x\.com\/Pattern4663"/i);
+  assert.match(html, /target="_blank"/i);
+  assert.match(html, /rel="noopener noreferrer"/i);
+  assert.doesNotMatch(html, /ACCOUNT LINK PENDING/);
   assert.match(html, /CONTRACT NOT LIVE/);
   assert.match(html, /PATTERN ATLAS/);
   assert.match(html, /ORDER HIDES EVERYWHERE\./);
@@ -58,7 +58,6 @@ test("server-renders the production PATTERN landing page", async () => {
   assert.match(html, /PATTERN FOUND (?:≠|&#x2260;) FUTURE GUARANTEED/);
   assert.doesNotMatch(html, /we compared|winner pattern/i);
   assert.doesNotMatch(html, /FIELD 01 \/ LIVE/);
-  assert.doesNotMatch(html, /FOLLOW PATTERN/);
   assert.doesNotMatch(
     html,
     /(?:contract|token)\s+(?:is\s+)?(?:live|born)|verified contract address|0x[a-f0-9]{40}/i,
@@ -94,11 +93,12 @@ test("uses the forwarded request origin for absolute social images", async () =>
 });
 
 test("removes the starter preview and keeps motion progressive", async () => {
-  const [page, layout, project, signalField, packageJson] = await Promise.all([
+  const [page, layout, project, signalField, styles, packageJson] = await Promise.all([
     readFile(new URL("../app/page.tsx", import.meta.url), "utf8"),
     readFile(new URL("../app/layout.tsx", import.meta.url), "utf8"),
     readFile(new URL("../app/_data/project.ts", import.meta.url), "utf8"),
     readFile(new URL("../app/_components/SignalField.tsx", import.meta.url), "utf8"),
+    readFile(new URL("../app/globals.css", import.meta.url), "utf8"),
     readFile(new URL("../package.json", import.meta.url), "utf8"),
   ]);
 
@@ -111,6 +111,8 @@ test("removes the starter preview and keeps motion progressive", async () => {
   assert.match(project, /chainId:\s*4663/);
   assert.match(project, /status:\s*"prelaunch"/);
   assert.match(project, /contractAddress:\s*null/);
+  assert.match(project, /xHandle:\s*"@Pattern4663"/);
+  assert.match(project, /xUrl:\s*"https:\/\/x\.com\/Pattern4663"/);
   assert.match(layout, /themeColor:\s*"#07090C"/);
   assert.match(layout, /export async function generateMetadata/);
   assert.match(layout, /x-forwarded-host/);
@@ -127,6 +129,12 @@ test("removes the starter preview and keeps motion progressive", async () => {
     /tone:\s*edgeBias\s*>\s*0\.93\s*\?\s*"cyan"/,
   );
   assert.match(signalField, /return \(\) => staticResizeObserver\.disconnect\(\)/);
+  assert.match(styles, /--muted:\s*#a8b4c0/i);
+  assert.match(styles, /--muted-subtle:\s*#96a3af/i);
+  assert.doesNotMatch(
+    styles,
+    /color:\s*#(?:697480|687480|66717c|67737f|626e7a|616d79|66727e|697581|68737f)\b/i,
+  );
 
   await Promise.all([
     assert.rejects(access(new URL("../app/_sites-preview", import.meta.url))),
@@ -149,10 +157,10 @@ test("publishes a truthful machine-readable prelaunch manifest", async () => {
   assert.equal(manifest.chain, "Robinhood Chain");
   assert.equal(manifest.status, "prelaunch");
   assert.equal(manifest.contractAddress, null);
-  assert.equal(manifest.updated, "2026-08-10");
+  assert.equal(manifest.updated, "2026-08-11");
   assert.deepEqual(manifest.officialLinks, {
     website: null,
-    x: null,
+    x: "https://x.com/Pattern4663",
     explorer: null,
     launchVenue: null,
   });
