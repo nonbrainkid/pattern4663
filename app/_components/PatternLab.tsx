@@ -24,45 +24,32 @@ type ResolverState = {
 };
 
 const NOISE_POINTS = Array.from({ length: 36 }, (_, index) => ({
-  x: 7 + ((index * 29 + 11) % 87),
-  y: 9 + ((index * 43 + 17) % 79),
-  delay: (index % 9) * 24,
+  x: 5 + ((index * 37 + 13) % 90),
+  y: 6 + ((index * 53 + 19) % 87),
+  size: index % 7 === 0 ? 7 : index % 3 === 0 ? 5 : 4,
+  delay: (index % 9) * 31,
 }));
 
-const RULE_GROUPS = [4, 6, 6, 3];
-const RULE_POINTS = RULE_GROUPS.flatMap((count, group) =>
-  Array.from({ length: count }, (_, point) => ({ group, point, count })),
-);
+const RULE_GROUPS = [4, 6, 6, 3] as const;
 
-function ResolverField({ phase }: { phase: Phase }) {
+function ResolverField({ phase, solved }: { phase: Phase; solved: boolean }) {
   return (
     <div className={`resolver-field resolver-field--phase-${phase}`} aria-hidden="true">
-      {phase === 0 &&
-        NOISE_POINTS.map((point, index) => (
-          <i
-            className={index === 22 ? "is-signal" : ""}
-            key={index}
-            style={
-              {
-                "--point-x": `${point.x}%`,
-                "--point-y": `${point.y}%`,
-                "--point-delay": `${point.delay}ms`,
-              } as CSSProperties
-            }
-          />
-        ))}
+      <span className="resolver-field__axis resolver-field__axis--x" />
+      <span className="resolver-field__axis resolver-field__axis--y" />
 
-      {phase === 1 && (
-        <div className="resolver-rule">
-          {RULE_POINTS.map(({ group, point, count }) => (
-            <span
-              className="resolver-rule__point"
-              key={`${group}-${point}`}
+      {phase === 0 && (
+        <div className="resolver-noise">
+          {NOISE_POINTS.map((point, index) => (
+            <i
+              className={index === 22 ? "is-signal" : ""}
+              key={index}
               style={
                 {
-                  "--group": group,
-                  "--point": point,
-                  "--count": count,
+                  "--point-x": `${point.x}%`,
+                  "--point-y": `${point.y}%`,
+                  "--point-size": `${point.size}px`,
+                  "--point-delay": `${point.delay}ms`,
                 } as CSSProperties
               }
             />
@@ -70,19 +57,49 @@ function ResolverField({ phase }: { phase: Phase }) {
         </div>
       )}
 
-      {phase === 2 && (
-        <div className="resolver-sequence">
-          <span>4</span><span>6</span><span>6</span><span>3</span>
-          <span>4</span><span>6</span><span>6</span><strong>?</strong>
+      {phase === 1 && (
+        <div className="resolver-rule">
+          {RULE_GROUPS.map((count, group) => (
+            <div className="resolver-rule__group" key={`${group}-${count}`}>
+              <span className="resolver-rule__count">{String(count).padStart(2, "0")}</span>
+              <div>
+                {Array.from({ length: count }, (_, point) => (
+                  <i className="resolver-rule__point" key={point} />
+                ))}
+              </div>
+            </div>
+          ))}
         </div>
       )}
 
-      {phase === 3 && (
-        <div className="resolver-signal">
-          <PatternMark />
-          <strong>$P4663 / SIGNAL RESOLVED</strong>
+      {phase === 2 && (
+        <div className="resolver-sequence">
+          <p><span>04</span><span>06</span><span>06</span><span>03</span></p>
+          <p><span>04</span><span>06</span><span>06</span><strong>?</strong></p>
         </div>
       )}
+
+      {phase === 3 && solved && (
+        <div className="resolver-signal">
+          <PatternMark />
+          <p><span>SIGNAL / 4663</span><strong>RESOLVED</strong></p>
+        </div>
+      )}
+
+      <span className="resolver-field__coordinate resolver-field__coordinate--top">Y / 04663</span>
+      <span className="resolver-field__coordinate resolver-field__coordinate--bottom">X / 04663</span>
+    </div>
+  );
+}
+
+function LockedNote() {
+  return (
+    <div className="resolver-lock">
+      <span className="resolver-lock__mark" aria-hidden="true"><PatternMark compact /></span>
+      <div>
+        <strong>FIELD NOTE / LOCKED</strong>
+        <span>Resolve the signal to open your observer record.</span>
+      </div>
     </div>
   );
 }
@@ -139,145 +156,184 @@ export function PatternLab() {
     failed: "Automatic sharing failed. Copy the field note manually.",
   }[shareState];
 
+  const phaseCopy = [
+    {
+      label: "OBSERVE / 00",
+      title: "DISTURB THE NOISE.",
+      body: "Move the resolution control. Do not search for an answer yet—notice when randomness begins to organize.",
+    },
+    {
+      label: "GROUP + COUNT / 01",
+      title: "NAME WHAT REPEATS.",
+      body: "The field has resolved into four groups. Count each group before moving to the pattern layer.",
+    },
+    {
+      label: "COMPLETE THE LOOP / 02",
+      title: "WHAT COMES NEXT?",
+      body: "The second line repeats the first. Identify the missing interval to unlock the signal.",
+    },
+  ][phase];
+
   return (
     <div className="resolver" data-pattern-resolver="guided">
-      <div className="resolver__console">
-        <header className="resolver__header">
-          <p>GUIDED RESOLVER / 4663</p>
-          <span>{solved ? "EARNED" : `ATTEMPTS / ${attempts}`}</span>
-        </header>
+      <header className="resolver__statusbar">
+        <p><span className="resolver__live-dot" aria-hidden="true" />GUIDED RESOLVER / 4663</p>
+        <p>MODE / OBSERVATION</p>
+        <p>{solved ? "SIGNAL / EARNED" : "FIELD NOTE / LOCKED"}</p>
+      </header>
 
+      <div className="resolver__body">
         <ol className="resolver__phases" aria-label="Resolver phases">
-          {PHASES.map((name, index) => (
-            <li aria-current={phase === index ? "step" : undefined} key={name}>
-              <span>{String(index).padStart(2, "0")}</span>{name}
-            </li>
-          ))}
+          {PHASES.map((name, index) => {
+            const isCurrent = phase === index;
+            const isComplete = index < phase || (index === 3 && solved);
+            return (
+              <li
+                aria-current={isCurrent ? "step" : undefined}
+                className={isCurrent ? "is-current" : isComplete ? "is-complete" : ""}
+                key={name}
+              >
+                <span className="resolver__phase-number">{String(index).padStart(2, "0")}</span>
+                <span className="resolver__phase-copy">
+                  <strong>{name}</strong>
+                  <small>{index === 3 && !solved ? "LOCKED" : isCurrent ? "ACTIVE" : isComplete ? "COMPLETE" : "PENDING"}</small>
+                </span>
+                <i aria-hidden="true">{isComplete ? "×" : "·"}</i>
+              </li>
+            );
+          })}
         </ol>
 
-        <ResolverField phase={phase} />
+        <div className="resolver__instrument">
+          <ResolverField phase={phase} solved={solved} />
 
-        <p className="sr-only" id="resolver-full-problem">
-          The first sequence is 4, 6, 6, 3. What completes the repeating sequence
-          4, 6, 6, question mark?
-        </p>
-
-        <div className="resolver__control">
-          <label htmlFor="pattern-resolution">
-            <span>RESOLUTION</span>
-            <output htmlFor="pattern-resolution">{phase} / 3 · {PHASES[phase]}</output>
-          </label>
-          <input
-            aria-describedby="resolution-help"
-            aria-valuetext={`${PHASES[phase]}, resolution ${phase} of 3`}
-            id="pattern-resolution"
-            max="3"
-            min="0"
-            onChange={(event) => setResolution(Number(event.currentTarget.value))}
-            step="1"
-            type="range"
-            value={phase}
-          />
-          <p id="resolution-help">Move from noise to rule. At pattern, name the missing interval.</p>
-        </div>
-
-        {phase === 2 && (
-          <fieldset
-            aria-describedby="resolver-full-problem"
-            className="resolver-quiz"
-            data-resolver-quiz="missing-interval"
-          >
-            <legend>WHAT COMPLETES 4 · 6 · 6 · ?</legend>
-            <div>
-              {[3, 4, 6].map((value) => (
-                <button onClick={() => guess(value)} type="button" key={value}>{value}</button>
-              ))}
+          <div className="resolver__control">
+            <label htmlFor="pattern-resolution">
+              <span>RESOLUTION</span>
+              <output htmlFor="pattern-resolution">
+                {String(phase).padStart(2, "0")} / {PHASES[phase]}
+              </output>
+            </label>
+            <input
+              aria-describedby="resolution-help"
+              aria-valuetext={`${PHASES[phase]}, resolution ${phase} of ${solved ? 3 : 2}`}
+              id="pattern-resolution"
+              max={solved ? 3 : 2}
+              min="0"
+              onChange={(event) => setResolution(Number(event.currentTarget.value))}
+              step="1"
+              type="range"
+              value={phase}
+            />
+            <div className="resolver__ticks" aria-hidden="true">
+              <span>00</span><span>01</span><span>02</span>{solved && <span>03</span>}
             </div>
-          </fieldset>
-        )}
-
-        <p className="resolver__announcement" aria-live="polite" aria-atomic="true">
-          {resolverMessage}
-        </p>
-
-        {solved && (
-          <p className="resolver__result">
-            You did not create the pattern. <strong>You changed the resolution.</strong>
-          </p>
-        )}
-      </div>
-
-      <aside
-        className="field-note"
-        aria-labelledby="field-note-title"
-        data-field-note-state={solved ? "earned" : "locked"}
-        data-manual-fallback={shareState === "failed" ? "available" : "inactive"}
-      >
-        <div>
-          <p className="field-note__eyebrow">EARNED FIELD NOTE</p>
-          <h3 id="field-note-title">NAME THE LENS YOU USED.</h3>
-          <p>
-            {solved
-              ? "The signal is resolved. Choose a lens and carry the observation forward."
-              : "Resolve the missing interval to unlock your personal field note."}
-          </p>
+            <p className="sr-only" id="resolution-help">
+              Move from noise to rule. At pattern, name the missing interval.
+            </p>
+          </div>
         </div>
 
-        {solved ? (
-          <div className="field-note__earned">
-            <fieldset>
-              <legend>CHOOSE A LENS</legend>
-              <div className="field-note__lenses">
-                {LENSES.map((value) => (
-                  <button
-                    aria-pressed={lens === value}
-                    key={value}
-                    onClick={() => {
-                      setLens(value);
-                      setShareState("idle");
-                    }}
-                    type="button"
-                  >
-                    {value}
-                  </button>
-                ))}
+        <aside
+          className="resolver__context"
+          aria-labelledby="resolver-context-title"
+          data-field-note-state={solved ? "earned" : "locked"}
+          data-manual-fallback={shareState === "failed" ? "available" : "inactive"}
+        >
+          {phase < 3 && phaseCopy && (
+            <>
+              <div className="resolver__context-copy">
+                <p>{phaseCopy.label}</p>
+                <h3 id="resolver-context-title">{phaseCopy.title}</h3>
+                <span>{phaseCopy.body}</span>
               </div>
-            </fieldset>
 
-            <pre className="field-note__preview" aria-live="polite">
-              {fieldNote || "OBSERVER / SELECT A LENS\nSIGNAL / 4663\nPATTERN / P4663"}
-            </pre>
-            <button
-              className="action action--primary field-note__share"
-              disabled={!lens}
-              onClick={shareFieldNote}
-              type="button"
-            >
-              SHARE FIELD NOTE <span aria-hidden="true">↗</span>
-            </button>
-            <p className="field-note__status" aria-live="polite" aria-atomic="true">
-              {shareMessage}
-            </p>
-            {shareState === "failed" && (
-              <textarea
-                aria-label="Field note for manual copying"
-                onFocus={(event) => event.currentTarget.select()}
-                readOnly
-                rows={6}
-                value={`${fieldNote}\n${canonicalShareUrl(window.location.href)}`}
-              />
-            )}
-          </div>
-        ) : (
-          <div className="field-note__locked">
-            <span aria-hidden="true"><PatternMark compact /></span>
-            <span>LOCKED / RESOLVE SIGNAL</span>
-            <button className="action field-note__share" disabled type="button">
-              SHARE FIELD NOTE / LOCKED
-            </button>
-          </div>
-        )}
-      </aside>
+              {phase === 2 ? (
+                <div className="resolver-quiz" data-resolver-quiz="missing-interval">
+                  <p className="sr-only" id="resolver-full-problem">
+                    The first sequence is 4, 6, 6, 3. What completes the repeating sequence
+                    4, 6, 6, question mark?
+                  </p>
+                  <div className="resolver-quiz__reference" aria-hidden="true">
+                    <span>REFERENCE</span><strong>04 / 06 / 06 / 03</strong>
+                  </div>
+                  <fieldset aria-describedby="resolver-full-problem">
+                    <legend>WHAT COMPLETES THE LOOP?</legend>
+                    <div>
+                      {[3, 4, 6].map((value) => (
+                        <button onClick={() => guess(value)} type="button" key={value}>
+                          {String(value).padStart(2, "0")}
+                        </button>
+                      ))}
+                    </div>
+                  </fieldset>
+                  {attempts > 0 && (
+                    <p className="resolver-quiz__attempts">ATTEMPTS / {String(attempts).padStart(2, "0")}</p>
+                  )}
+                  <p className="resolver__announcement" aria-live="polite" aria-atomic="true">
+                    {resolverMessage}
+                  </p>
+                </div>
+              ) : (
+                <LockedNote />
+              )}
+            </>
+          )}
+
+          {phase === 3 && solved && (
+            <div className="field-note">
+              <div className="resolver__context-copy">
+                <p>EARNED FIELD NOTE / 03</p>
+                <h3 id="resolver-context-title">NAME YOUR LENS.</h3>
+                <span>You did not create the pattern. You changed the resolution.</span>
+              </div>
+
+              <fieldset>
+                <legend>CHOOSE A LENS</legend>
+                <div className="field-note__lenses">
+                  {LENSES.map((value) => (
+                    <button
+                      aria-pressed={lens === value}
+                      key={value}
+                      onClick={() => {
+                        setLens(value);
+                        setShareState("idle");
+                      }}
+                      type="button"
+                    >
+                      {value}
+                    </button>
+                  ))}
+                </div>
+              </fieldset>
+
+              <pre className="field-note__preview" aria-live="polite">
+                {fieldNote || "OBSERVER / SELECT A LENS\nSIGNAL / 4663\nPATTERN / P4663"}
+              </pre>
+              <button
+                className="action action--primary field-note__share"
+                disabled={!lens}
+                onClick={shareFieldNote}
+                type="button"
+              >
+                SHARE FIELD NOTE <span aria-hidden="true">↗</span>
+              </button>
+              <p className="field-note__status" aria-live="polite" aria-atomic="true">
+                {shareMessage}
+              </p>
+              {shareState === "failed" && (
+                <textarea
+                  aria-label="Field note for manual copying"
+                  onFocus={(event) => event.currentTarget.select()}
+                  readOnly
+                  rows={6}
+                  value={`${fieldNote}\n${canonicalShareUrl(window.location.href)}`}
+                />
+              )}
+            </div>
+          )}
+        </aside>
+      </div>
     </div>
   );
 }

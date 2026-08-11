@@ -6,8 +6,9 @@ import "./globals.css";
 
 const TITLE = `${project.name} / $${project.symbol} \u2014 Look Beneath the Noise`;
 const DESCRIPTION =
-  `${project.name} / $${project.symbol} is a pre-launch culture coin and shared signal for people who find structure beneath noise. Independent; designed for ${project.chainName} (${project.chainId}).`;
+  `${project.name} / $${project.symbol} is a live, independent culture coin and shared signal for people who find structure beneath noise, launched on ${project.chainName} (${project.chainId}).`;
 const OG_IMAGE_PATH = "/brand/pattern_og_1200x630_v01.png";
+const ICON_IMAGE_PATH = "/brand/pattern_x_avatar_800x800_v01.png";
 const LOCAL_FALLBACK_ORIGIN = new URL("http://localhost:3000");
 const VALID_HOST = /^(?:\[[0-9a-f:.]+\]|[a-z0-9.-]+)(?::\d{1,5})?$/i;
 
@@ -70,8 +71,9 @@ export async function generateMetadata(): Promise<Metadata> {
       ? { alternates: { canonical: project.canonicalUrl } }
       : {}),
     icons: {
-      icon: "/favicon.svg",
-      shortcut: "/favicon.svg",
+      icon: [{ url: ICON_IMAGE_PATH, type: "image/png", sizes: "800x800" }],
+      shortcut: [{ url: ICON_IMAGE_PATH, type: "image/png", sizes: "800x800" }],
+      apple: [{ url: ICON_IMAGE_PATH, type: "image/png", sizes: "800x800" }],
     },
     openGraph: {
       title: TITLE,

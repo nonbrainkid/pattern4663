@@ -38,9 +38,10 @@ export function createFieldNote(lens) {
 
 export function resolverReducer(state, action) {
   if (action.type === "SET_PHASE") {
+    const maximumPhase = state.solved ? 3 : 2;
     return {
       ...state,
-      phase: Math.max(0, Math.min(3, Number(action.phase))),
+      phase: Math.max(0, Math.min(maximumPhase, Number(action.phase))),
       message: "",
     };
   }

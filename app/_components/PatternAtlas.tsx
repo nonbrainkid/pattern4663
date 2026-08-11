@@ -352,11 +352,11 @@ function PhyllotaxisPlot() {
             key={seed.index}
             style={
               {
-                "--seed-left": `${seed.left}%`,
-                "--seed-top": `${seed.top}%`,
-                "--seed-size": `${seed.size}px`,
-                "--seed-order": seed.index,
-                "--seed-opacity": seed.opacity,
+                "--seed-left": `${seed.left.toFixed(6)}%`,
+                "--seed-top": `${seed.top.toFixed(6)}%`,
+                "--seed-size": `${seed.size.toFixed(4)}px`,
+                "--seed-order": String(seed.index),
+                "--seed-opacity": seed.opacity.toFixed(6),
               } as CSSProperties
             }
           />

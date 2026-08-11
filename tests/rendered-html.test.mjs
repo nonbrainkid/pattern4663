@@ -49,19 +49,26 @@ test("server-renders the production PATTERN landing page", async () => {
   assert.match(html, /PATTERN \/[\s\S]{0,80}\$P4663/);
   assert.match(html, /\$P4663/);
   assert.match(html, /The world becomes recognizable through patterns\./);
-  assert.match(html, /PRE-LAUNCH[\s\S]{0,80}\/ CONTRACT[\s\S]{0,80}NOT PUBLISHED/);
+  assert.match(html, /LIVE \/ CHAIN[\s\S]{0,40}4663/);
+  assert.match(html, /CONTRACT PUBLISHED/);
   assert.match(html, /ROBINHOOD CHAIN/);
-  assert.match(html, /not issued, sponsored, endorsed, or operated by Robinhood/i);
-  assert.match(html, /No listing, financial return, or utility is promised\./);
+  assert.match(html, /not issued, sponsored, endorsed, or operated by Robinhood or pons/i);
+  assert.match(html, /No listing, financial return, or utility is promised\./i);
   assert.match(html, /LOOK TWICE\. VERIFY EVERYTHING\./);
   assert.match(html, /pattern_og_1200x630_v01\.png/);
+  assert.match(html, /pattern_x_avatar_800x800_v01\.png/);
   assert.match(html, /PERCEPTION FIELD \/ ACTIVE/);
   assert.match(html, /FOLLOW @PATTERN4663/i);
   assert.match(html, /href="https:\/\/x\.com\/Pattern4663"/i);
   assert.match(html, /target="_blank"/i);
   assert.match(html, /rel="noopener noreferrer"/i);
   assert.doesNotMatch(html, /ACCOUNT LINK PENDING/);
-  assert.match(html, /PRE-LAUNCH \/ CONTRACT NOT PUBLISHED/);
+  assert.match(html, /TRADE ON PONS/);
+  assert.match(html, /VERIFY ON EXPLORER/);
+  assert.match(html, /0xB74E8B647517813D8b3790240e98F2E9A09cf5a3/);
+  assert.match(html, /href="https:\/\/www\.ponsfamily\.com\/launchpad\/0xB74E8B647517813D8b3790240e98F2E9A09cf5a3"/i);
+  assert.match(html, /href="https:\/\/robinhoodchain\.blockscout\.com\/token\/0xB74E8B647517813D8b3790240e98F2E9A09cf5a3"/i);
+  assert.doesNotMatch(html, /PRE-LAUNCH|CONTRACT NOT PUBLISHED|token is not live/i);
   assert.match(html, /PATTERN ATLAS/);
   assert.match(html, /ONE INSTINCT\. FOUR SYSTEMS\./);
   assert.match(html, /SYNTHETIC \/ NOT MARKET DATA/);
@@ -72,22 +79,14 @@ test("server-renders the production PATTERN landing page", async () => {
   assert.match(html, /data-pattern-resolver="guided"/);
   for (const phase of PHASES) assert.match(html, new RegExp(`>${phase}<`));
   assert.match(html, /for="pattern-resolution"[\s\S]*RESOLUTION/);
-  assert.match(html, /aria-valuetext="NOISE, resolution 0 of 3"/);
-  assert.match(
-    html,
-    /The first sequence is 4, 6, 6, 3\.[\s\S]*What completes the repeating sequence[\s\S]*4, 6, 6, question mark\?/,
-  );
-  assert.match(html, /aria-live="polite"/);
+  assert.match(html, /aria-valuetext="NOISE, resolution 0 of 2"/);
   assert.match(html, /data-field-note-state="locked"/);
   assert.match(html, /data-manual-fallback="inactive"/);
-  assert.match(html, /SHARE FIELD NOTE \/ LOCKED/);
-  assert.match(html, /<button[^>]*disabled=""[^>]*>[\s\S]*SHARE FIELD NOTE \/ LOCKED/i);
+  assert.match(html, /FIELD NOTE \/ LOCKED/);
+  assert.doesNotMatch(html, /SHARE FIELD NOTE \/ LOCKED/);
+  assert.doesNotMatch(html, /WHAT COMPLETES THE LOOP\?|EARNED FIELD NOTE|SIGNAL \/ 4663[\s\S]{0,30}RESOLVED/i);
   assert.doesNotMatch(html, /we compared|winner pattern/i);
   assert.doesNotMatch(html, /FIELD 01 \/ LIVE/);
-  assert.doesNotMatch(
-    html,
-    /(?:contract|token)\s+(?:is\s+)?(?:live|born)|verified contract address|0x[a-f0-9]{40}/i,
-  );
   const canvasTags = html.match(/<canvas\b[^>]*>/gi) ?? [];
   assert.equal(canvasTags.length, 3);
   for (const canvasTag of canvasTags) {
@@ -134,7 +133,7 @@ test("the resolver model distinguishes observation from an earned signal", () =>
     type: "SET_PHASE",
     phase: 3,
   });
-  assert.equal(manuallyRevealed.phase, 3);
+  assert.equal(manuallyRevealed.phase, 2);
   assert.equal(manuallyRevealed.solved, false);
   assert.equal(manuallyRevealed.attempts, 0);
 
@@ -152,6 +151,13 @@ test("the resolver model distinguishes observation from an earned signal", () =>
   assert.equal(solved.solved, true);
   assert.equal(solved.attempts, 2);
 
+  const revisitSignal = resolverReducer(
+    { ...solved, phase: 1 },
+    { type: "SET_PHASE", phase: 3 },
+  );
+  assert.equal(revisitSignal.phase, 3);
+  assert.equal(revisitSignal.solved, true);
+
   assert.equal(normalizeLens("  code "), "CODE");
   assert.equal(normalizeLens("prices"), null);
   const note = createFieldNote("  code ");
@@ -168,14 +174,16 @@ test("the resolver model distinguishes observation from an earned signal", () =>
 });
 
 test("removes the starter preview and keeps motion progressive", async () => {
-  const [page, layout, project, signalField, patternLab, styles, packageJson] = await Promise.all([
+  const [page, layout, project, signalField, patternLab, patternAtlas, styles, packageJson, cleanScript] = await Promise.all([
     readFile(new URL("../app/page.tsx", import.meta.url), "utf8"),
     readFile(new URL("../app/layout.tsx", import.meta.url), "utf8"),
     readFile(new URL("../app/_data/project.ts", import.meta.url), "utf8"),
     readFile(new URL("../app/_components/SignalField.tsx", import.meta.url), "utf8"),
     readFile(new URL("../app/_components/PatternLab.tsx", import.meta.url), "utf8"),
+    readFile(new URL("../app/_components/PatternAtlas.tsx", import.meta.url), "utf8"),
     readFile(new URL("../app/globals.css", import.meta.url), "utf8"),
     readFile(new URL("../package.json", import.meta.url), "utf8"),
+    readFile(new URL("../scripts/clean-next.mjs", import.meta.url), "utf8"),
   ]);
 
   assert.doesNotMatch(page, /["']use client["']/);
@@ -185,14 +193,21 @@ test("removes the starter preview and keeps motion progressive", async () => {
   assert.match(project, /name:\s*"PATTERN"/);
   assert.match(project, /symbol:\s*"P4663"/);
   assert.match(project, /chainId:\s*4663/);
-  assert.match(project, /status:\s*"prelaunch"/);
-  assert.match(project, /contractAddress:\s*null/);
+  assert.match(project, /status:\s*"live"/);
+  assert.match(project, /contractAddress:\s*"0xB74E8B647517813D8b3790240e98F2E9A09cf5a3"/);
+  assert.match(project, /decimals:\s*18/);
+  assert.match(project, /totalSupply:\s*1_000_000_000/);
+  assert.match(project, /launchVenue:\s*"pons"/);
+  assert.match(project, /https:\/\/www\.ponsfamily\.com\/launchpad\/0xB74E8B647517813D8b3790240e98F2E9A09cf5a3/);
+  assert.match(project, /https:\/\/robinhoodchain\.blockscout\.com\/token\/0xB74E8B647517813D8b3790240e98F2E9A09cf5a3/);
   assert.match(project, /xHandle:\s*"@Pattern4663"/);
   assert.match(project, /xUrl:\s*"https:\/\/x\.com\/Pattern4663"/);
   assert.match(project, /canonicalUrl:\s*"https:\/\/pattern4663\.com"/);
+  assert.doesNotMatch(project, /PRE-LAUNCH|NOT PUBLISHED|status:\s*"prelaunch"/i);
   assert.match(layout, /themeColor:\s*"#07090C"/);
   assert.match(layout, /export async function generateMetadata/);
   assert.match(layout, /x-forwarded-host/);
+  assert.match(layout, /ICON_IMAGE_PATH = "\/brand\/pattern_x_avatar_800x800_v01\.png"/);
   assert.doesNotMatch(layout, /codex-preview|Starter Project/);
   assert.doesNotMatch(packageJson, /react-loading-skeleton|WRANGLER_LOG_PATH=/);
   assert.match(signalField, /^"use client";/);
@@ -209,6 +224,7 @@ test("removes the starter preview and keeps motion progressive", async () => {
   assert.match(patternLab, /type="range"/);
   assert.match(patternLab, /aria-valuetext/);
   assert.match(patternLab, /data-resolver-quiz="missing-interval"/);
+  assert.match(patternLab, /max=\{solved \? 3 : 2\}/);
   assert.match(patternLab, /navigator\.share/);
   assert.match(patternLab, /navigator\.clipboard\?\.writeText/);
   assert.match(patternLab, /Field note shared\./);
@@ -217,12 +233,24 @@ test("removes the starter preview and keeps motion progressive", async () => {
   assert.match(patternLab, /aria-live="polite"/);
   assert.match(patternLab, /readOnly/);
   assert.match(patternLab, /data-manual-fallback/);
+  assert.match(patternAtlas, /seed\.left\.toFixed\(6\)/);
+  assert.match(patternAtlas, /seed\.top\.toFixed\(6\)/);
+  assert.match(patternAtlas, /seed\.size\.toFixed\(4\)/);
+  assert.match(patternAtlas, /String\(seed\.index\)/);
+  assert.match(patternAtlas, /seed\.opacity\.toFixed\(6\)/);
   assert.match(styles, /--muted:\s*#a8b4c0/i);
   assert.match(styles, /--muted-subtle:\s*#96a3af/i);
+  assert.match(styles, /grid-template-columns:\s*176px minmax\(0, 1fr\) 372px/);
+  assert.match(styles, /\.resolver__context/);
+  assert.match(styles, /\.resolver__control input\[type="range"\][^}]*height:\s*44px[^}]*min-height:\s*44px/s);
   assert.doesNotMatch(
     styles,
     /color:\s*#(?:697480|687480|66717c|67737f|626e7a|616d79|66727e|697581|68737f)\b/i,
   );
+  assert.match(packageJson, /node scripts\/clean-next\.mjs && next build/);
+  assert.match(cleanScript, /basename\(buildDirectory\) !== "\.next"/);
+  assert.match(cleanScript, /dirname\(buildDirectory\) !== repositoryRoot/);
+  assert.match(cleanScript, /rmSync\(buildDirectory, \{ recursive: true, force: true \}\)/);
 
   await Promise.all([
     assert.rejects(access(new URL("../app/_sites-preview", import.meta.url))),
@@ -231,30 +259,30 @@ test("removes the starter preview and keeps motion progressive", async () => {
     assert.rejects(access(new URL("../public/window.svg", import.meta.url))),
   ]);
 
-  await access(new URL("public/favicon.svg", projectRoot));
+  await access(new URL("public/brand/pattern_x_avatar_800x800_v01.png", projectRoot));
 });
 
-test("publishes a truthful machine-readable prelaunch manifest", async () => {
+test("publishes the exact machine-readable live token record", async () => {
   const manifest = JSON.parse(
     await readFile(new URL("../public/token.json", import.meta.url), "utf8"),
   );
 
-  assert.equal(manifest.name, "PATTERN");
+  assert.equal(manifest.name, "Pattern");
   assert.equal(manifest.symbol, "P4663");
   assert.equal(manifest.chainId, 4663);
   assert.equal(manifest.chain, "Robinhood Chain");
-  assert.equal(manifest.status, "prelaunch");
-  assert.equal(manifest.contractAddress, null);
-  assert.equal(manifest.updated, "2026-08-11");
+  assert.equal(manifest.status, "live");
+  assert.equal(manifest.contractAddress, "0xB74E8B647517813D8b3790240e98F2E9A09cf5a3");
+  assert.equal(manifest.decimals, 18);
+  assert.equal(manifest.totalSupply, 1_000_000_000);
+  assert.equal(manifest.updated, "2026-08-12");
   assert.deepEqual(manifest.officialLinks, {
     website: "https://pattern4663.com",
     x: "https://x.com/Pattern4663",
-    explorer: null,
-    launchVenue: null,
+    explorer: "https://robinhoodchain.blockscout.com/token/0xB74E8B647517813D8b3790240e98F2E9A09cf5a3",
+    launchVenue: "https://www.ponsfamily.com/launchpad/0xB74E8B647517813D8b3790240e98F2E9A09cf5a3",
   });
-  assert.match(manifest.disclosure, /not deployed or published/i);
-  assert.doesNotMatch(
-    JSON.stringify(manifest),
-    /(?:contract|token)\s+(?:is\s+)?(?:live|born)|verified contract address|0x[a-f0-9]{40}/i,
-  );
+  assert.match(manifest.disclosure, /independent experimental culture coin launched on Robinhood Chain via pons/i);
+  assert.match(manifest.disclosure, /not issued, sponsored, endorsed, or operated by Robinhood or pons/i);
+  assert.doesNotMatch(JSON.stringify(manifest), /PRE-LAUNCH|CONTRACT NOT PUBLISHED|not deployed or published/i);
 });

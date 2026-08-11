@@ -41,9 +41,9 @@ export default function Home() {
           <div className="hero__inner page-width">
             <div className="hero__copy">
               <p className="hero__eyebrow">
-                <span>PRE-LAUNCH</span>
+                <span>LIVE / CHAIN {project.chainId}</span>
                 <span>{project.name} / ${project.symbol}</span>
-                <span>CHAIN {project.chainId}</span>
+                <span>VIA PONS</span>
                 <span>INDEPENDENT</span>
               </p>
               <h1 className="hero__title" id="hero-title">LOOK BENEATH<span>THE NOISE.</span></h1>
@@ -53,8 +53,9 @@ export default function Home() {
                 culture coin—and shared signal—for people who look twice.
               </p>
               <div className="hero__actions" aria-label="Primary actions">
-                <a className="action action--primary" href="#lab">
-                  <span>TEST THE PATTERN</span><span className="action__arrow" aria-hidden="true">↘</span>
+                <a className="action action--primary" href={project.launchUrl ?? "#origin"}
+                  {...(project.launchUrl ? { target: "_blank", rel: "noopener noreferrer" } : {})}>
+                  <span>TRADE ON PONS</span><span className="action__arrow" aria-hidden="true">↗</span>
                 </a>
                 <a className="action action--quiet" href={project.xUrl ?? "#signal"}
                   {...(project.xUrl ? { target: "_blank", rel: "noopener noreferrer" } : {})}>
@@ -62,7 +63,7 @@ export default function Home() {
                   <span className="action__arrow" aria-hidden="true">→</span>
                 </a>
               </div>
-              <p className="status-chip"><span aria-hidden="true" />{statusLabel()} / CONTRACT {contractLabel()}</p>
+              <p className="status-chip"><span aria-hidden="true" />{statusLabel()} / CHAIN {project.chainId} / CONTRACT PUBLISHED</p>
             </div>
             <div className="hero__visual">
               <SignalField />
@@ -134,16 +135,24 @@ export default function Home() {
             <div className="origin__intro">
               <SectionLabel>ORIGIN / CHAIN {project.chainId}</SectionLabel>
               <h2 className="section-title" id="origin-title">A CULTURAL SIGNAL,<span>AN ON-CHAIN RECORD.</span></h2>
-              <p>PATTERN / ${project.symbol} is independently designed for Robinhood Chain. The token is not live. No contract address is canonical until it appears here, on {project.xHandle}, and on the chain {project.chainId} explorer.</p>
+              <p>PATTERN / ${project.symbol} was independently launched on Robinhood Chain via pons. Neither pons nor Robinhood sponsors or endorses the token. Verify this canonical record before interacting.</p>
             </div>
             <div className="origin__record">
               <div className="origin__record-head"><span>NETWORK RECORD</span><span>REV / 00</span></div>
               <dl>
                 <div><dt>NETWORK</dt><dd>{chainName}</dd></div>
                 <div><dt>CHAIN ID</dt><dd className="origin__number">{project.chainId}</dd></div>
+                <div><dt>ON-CHAIN NAME</dt><dd>{project.onchainName}</dd></div>
                 <div><dt>SYMBOL</dt><dd>{project.symbol}</dd></div>
+                <div><dt>DECIMALS</dt><dd>{project.decimals}</dd></div>
+                <div><dt>TOTAL SUPPLY</dt><dd>{project.totalSupply?.toLocaleString("en-US")}</dd></div>
                 <div><dt>STATUS</dt><dd><span className="record-status">{statusLabel()}</span></dd></div>
-                <div><dt>CONTRACT</dt><dd className="origin__muted">{contractLabel()}</dd></div>
+                <div className="origin__contract-row"><dt>CONTRACT</dt><dd>
+                  <a href={project.explorerUrl ?? "#top"}
+                    {...(project.explorerUrl ? { target: "_blank", rel: "noopener noreferrer" } : {})}>
+                    {contractLabel()}
+                  </a>
+                </dd></div>
               </dl>
               <p className="origin__checksum">VERIFY DOMAIN / VERIFY CHAIN / VERIFY FULL ADDRESS</p>
             </div>
@@ -155,14 +164,17 @@ export default function Home() {
           <div className="page-width signal-cta__inner reveal">
             <SectionLabel>SIGNAL / {project.chainId}</SectionLabel>
             <h2 className="signal-cta__title" id="signal-title">IF YOU LOOK TWICE,<span>THIS IS YOUR SIGNAL.</span></h2>
-            <p>Follow the canonical account for PATTERN / ${project.symbol}. At launch, verify every character of the contract before interacting. Ignore DMs, reply addresses, and unofficial links.</p>
+            <p>PATTERN / ${project.symbol} is live via pons. Availability can depend on jurisdiction. Verify every character of the contract on Blockscout before interacting, and ignore addresses sent through DMs or replies.</p>
             <div className="signal-cta__actions">
-              <a className="action action--primary" href={project.xUrl ?? "#top"}
-                {...(project.xUrl ? { target: "_blank", rel: "noopener noreferrer" } : {})}>
-                <span>FOLLOW {project.xHandle ?? project.name}</span><span className="action__arrow" aria-hidden="true">→</span>
+              <a className="action action--primary" href={project.launchUrl ?? "#origin"}
+                {...(project.launchUrl ? { target: "_blank", rel: "noopener noreferrer" } : {})}>
+                <span>TRADE ON PONS</span><span className="action__arrow" aria-hidden="true">↗</span>
               </a>
-              <a className="action action--quiet" href="#atlas">RETURN TO THE ATLAS</a>
-              <span className="signal-cta__pending">PRE-LAUNCH / CONTRACT NOT PUBLISHED</span>
+              <a className="action action--quiet" href={project.explorerUrl ?? "#origin"}
+                {...(project.explorerUrl ? { target: "_blank", rel: "noopener noreferrer" } : {})}>
+                VERIFY ON EXPLORER
+              </a>
+              <span className="signal-cta__pending">LIVE / VERIFY FULL CA</span>
             </div>
           </div>
         </section>
