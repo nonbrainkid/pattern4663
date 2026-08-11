@@ -4,9 +4,9 @@ import { headers } from "next/headers";
 import { project } from "./_data/project";
 import "./globals.css";
 
-const TITLE = `${project.name} \u2014 See the Pattern`;
+const TITLE = `${project.name} / $${project.symbol} \u2014 Look Beneath the Noise`;
 const DESCRIPTION =
-  `${project.name} ($${project.symbol}) is a pre-launch culture coin for people who see structure in the noise. Designed for ${project.chainName} (${project.chainId}).`;
+  `${project.name} / $${project.symbol} is a pre-launch culture coin and shared signal for people who find structure beneath noise. Independent; designed for ${project.chainName} (${project.chainId}).`;
 const OG_IMAGE_PATH = "/brand/pattern_og_1200x630_v01.png";
 const LOCAL_FALLBACK_ORIGIN = new URL("http://localhost:3000");
 const VALID_HOST = /^(?:\[[0-9a-f:.]+\]|[a-z0-9.-]+)(?::\d{1,5})?$/i;

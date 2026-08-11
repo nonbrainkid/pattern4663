@@ -1,6 +1,16 @@
 import assert from "node:assert/strict";
 import { access, readFile } from "node:fs/promises";
 import test from "node:test";
+import {
+  canonicalShareUrl,
+  createFieldNote,
+  INITIAL_RESOLVER_STATE,
+  normalizeLens,
+  PHASES,
+  resolveGuess,
+  resolverReducer,
+  shareOutcome,
+} from "../app/_components/patternLabModel.mjs";
 
 const projectRoot = new URL("../", import.meta.url);
 
@@ -34,28 +44,44 @@ test("server-renders the production PATTERN landing page", async () => {
   assert.match(response.headers.get("content-type") ?? "", /^text\/html\b/i);
 
   const html = await response.text();
-  assert.match(html, /<title>PATTERN (?:\u2014|&#x2014;|&mdash;) See the Pattern<\/title>/i);
-  assert.match(html, /SEE THE[\s\S]*PATTERN\./);
-  assert.match(html, /SYMBOL \/[\s\S]{0,80}P4663/);
+  assert.match(html, /<title>PATTERN \/ \$P4663 (?:\u2014|&#x2014;|&mdash;) Look Beneath the Noise<\/title>/i);
+  assert.match(html, /LOOK BENEATH[\s\S]*THE NOISE\./);
+  assert.match(html, /PATTERN \/[\s\S]{0,80}\$P4663/);
   assert.match(html, /\$P4663/);
-  assert.match(html, /Everything is noise until you see the pattern\./);
+  assert.match(html, /The world becomes recognizable through patterns\./);
   assert.match(html, /PRE-LAUNCH[\s\S]{0,80}\/ CONTRACT[\s\S]{0,80}NOT PUBLISHED/);
   assert.match(html, /ROBINHOOD CHAIN/);
-  assert.match(html, /Not affiliated with or endorsed by Robinhood Markets, Inc\./);
-  assert.match(html, /No promise of profit, utility, or listing\./);
-  assert.match(html, /SEE STRUCTURE\. VERIFY EVERYTHING\./);
+  assert.match(html, /not issued, sponsored, endorsed, or operated by Robinhood/i);
+  assert.match(html, /No listing, financial return, or utility is promised\./);
+  assert.match(html, /LOOK TWICE\. VERIFY EVERYTHING\./);
   assert.match(html, /pattern_og_1200x630_v01\.png/);
-  assert.match(html, /FIELD 01 \/ ACTIVE/);
+  assert.match(html, /PERCEPTION FIELD \/ ACTIVE/);
   assert.match(html, /FOLLOW @PATTERN4663/i);
   assert.match(html, /href="https:\/\/x\.com\/Pattern4663"/i);
   assert.match(html, /target="_blank"/i);
   assert.match(html, /rel="noopener noreferrer"/i);
   assert.doesNotMatch(html, /ACCOUNT LINK PENDING/);
-  assert.match(html, /CONTRACT NOT LIVE/);
+  assert.match(html, /PRE-LAUNCH \/ CONTRACT NOT PUBLISHED/);
   assert.match(html, /PATTERN ATLAS/);
-  assert.match(html, /ORDER HIDES EVERYWHERE\./);
-  assert.match(html, /ILLUSTRATIVE \/ NOT MARKET DATA/);
+  assert.match(html, /ONE INSTINCT\. FOUR SYSTEMS\./);
+  assert.match(html, /SYNTHETIC \/ NOT MARKET DATA/);
   assert.match(html, /PATTERN FOUND (?:≠|&#x2260;) FUTURE GUARANTEED/);
+  assert.match(html, /RECOGNITION HAS[\s\S]*A STRUCTURE\./);
+  assert.match(html, /DON(?:&#x27;|')T TAKE THE CLAIM[\s\S]*ON FAITH\./i);
+  assert.match(html, /LOOK TWICE\.[\s\S]*TEST WHAT YOU SEE\./);
+  assert.match(html, /data-pattern-resolver="guided"/);
+  for (const phase of PHASES) assert.match(html, new RegExp(`>${phase}<`));
+  assert.match(html, /for="pattern-resolution"[\s\S]*RESOLUTION/);
+  assert.match(html, /aria-valuetext="NOISE, resolution 0 of 3"/);
+  assert.match(
+    html,
+    /The first sequence is 4, 6, 6, 3\.[\s\S]*What completes the repeating sequence[\s\S]*4, 6, 6, question mark\?/,
+  );
+  assert.match(html, /aria-live="polite"/);
+  assert.match(html, /data-field-note-state="locked"/);
+  assert.match(html, /data-manual-fallback="inactive"/);
+  assert.match(html, /SHARE FIELD NOTE \/ LOCKED/);
+  assert.match(html, /<button[^>]*disabled=""[^>]*>[\s\S]*SHARE FIELD NOTE \/ LOCKED/i);
   assert.doesNotMatch(html, /we compared|winner pattern/i);
   assert.doesNotMatch(html, /FIELD 01 \/ LIVE/);
   assert.doesNotMatch(
@@ -70,7 +96,7 @@ test("server-renders the production PATTERN landing page", async () => {
   assert.doesNotMatch(html, /codex-preview|react-loading-skeleton|Building your site/i);
 });
 
-test("uses the forwarded request origin for absolute social images", async () => {
+test("uses the canonical production origin for social metadata", async () => {
   const response = await render({
     url: "http://internal.invalid/",
     headers: {
@@ -83,21 +109,71 @@ test("uses the forwarded request origin for absolute social images", async () =>
   const html = await response.text();
   assert.match(
     html,
-    /https:\/\/signal\.pattern\.test\/brand\/pattern_og_1200x630_v01\.png/,
+    /https:\/\/pattern4663\.com\/brand\/pattern_og_1200x630_v01\.png/,
   );
   assert.doesNotMatch(
     html,
     /http:\/\/localhost:3000\/brand\/pattern_og_1200x630_v01\.png/,
   );
-  assert.doesNotMatch(html, /rel="canonical"/i);
+  assert.match(html, /rel="canonical" href="https:\/\/pattern4663\.com"/i);
+});
+
+test("the resolver model distinguishes observation from an earned signal", () => {
+  assert.deepEqual(resolveGuess(4), {
+    correct: false,
+    phase: 2,
+    message: "Look for the repeating interval.",
+  });
+  assert.deepEqual(resolveGuess(3), {
+    correct: true,
+    phase: 3,
+    message: "Signal resolved.",
+  });
+
+  const manuallyRevealed = resolverReducer(INITIAL_RESOLVER_STATE, {
+    type: "SET_PHASE",
+    phase: 3,
+  });
+  assert.equal(manuallyRevealed.phase, 3);
+  assert.equal(manuallyRevealed.solved, false);
+  assert.equal(manuallyRevealed.attempts, 0);
+
+  const wrongGuess = resolverReducer(
+    { ...INITIAL_RESOLVER_STATE, phase: 2 },
+    { type: "GUESS", value: 6 },
+  );
+  assert.equal(wrongGuess.phase, 2);
+  assert.equal(wrongGuess.solved, false);
+  assert.equal(wrongGuess.attempts, 1);
+  assert.equal(wrongGuess.message, "Look for the repeating interval.");
+
+  const solved = resolverReducer(wrongGuess, { type: "GUESS", value: 3 });
+  assert.equal(solved.phase, 3);
+  assert.equal(solved.solved, true);
+  assert.equal(solved.attempts, 2);
+
+  assert.equal(normalizeLens("  code "), "CODE");
+  assert.equal(normalizeLens("prices"), null);
+  const note = createFieldNote("  code ");
+  assert.match(note, /OBSERVER \/ CODE/);
+  assert.match(note, /SIGNAL \/ 4663/);
+  assert.match(note, /PATTERN \/ P4663/);
+  assert.doesNotMatch(note, /profit|return|buy|guaranteed|contract|launch/i);
+  assert.equal(canonicalShareUrl("https://pattern4663.com/#lab"), "https://pattern4663.com/");
+
+  assert.equal(shareOutcome("native"), "shared");
+  assert.equal(shareOutcome("clipboard"), "copied");
+  assert.equal(shareOutcome("native", { name: "AbortError" }), "cancelled");
+  assert.equal(shareOutcome("clipboard", new Error("denied")), "failed");
 });
 
 test("removes the starter preview and keeps motion progressive", async () => {
-  const [page, layout, project, signalField, styles, packageJson] = await Promise.all([
+  const [page, layout, project, signalField, patternLab, styles, packageJson] = await Promise.all([
     readFile(new URL("../app/page.tsx", import.meta.url), "utf8"),
     readFile(new URL("../app/layout.tsx", import.meta.url), "utf8"),
     readFile(new URL("../app/_data/project.ts", import.meta.url), "utf8"),
     readFile(new URL("../app/_components/SignalField.tsx", import.meta.url), "utf8"),
+    readFile(new URL("../app/_components/PatternLab.tsx", import.meta.url), "utf8"),
     readFile(new URL("../app/globals.css", import.meta.url), "utf8"),
     readFile(new URL("../package.json", import.meta.url), "utf8"),
   ]);
@@ -113,6 +189,7 @@ test("removes the starter preview and keeps motion progressive", async () => {
   assert.match(project, /contractAddress:\s*null/);
   assert.match(project, /xHandle:\s*"@Pattern4663"/);
   assert.match(project, /xUrl:\s*"https:\/\/x\.com\/Pattern4663"/);
+  assert.match(project, /canonicalUrl:\s*"https:\/\/pattern4663\.com"/);
   assert.match(layout, /themeColor:\s*"#07090C"/);
   assert.match(layout, /export async function generateMetadata/);
   assert.match(layout, /x-forwarded-host/);
@@ -129,6 +206,17 @@ test("removes the starter preview and keeps motion progressive", async () => {
     /tone:\s*edgeBias\s*>\s*0\.93\s*\?\s*"cyan"/,
   );
   assert.match(signalField, /return \(\) => staticResizeObserver\.disconnect\(\)/);
+  assert.match(patternLab, /type="range"/);
+  assert.match(patternLab, /aria-valuetext/);
+  assert.match(patternLab, /data-resolver-quiz="missing-interval"/);
+  assert.match(patternLab, /navigator\.share/);
+  assert.match(patternLab, /navigator\.clipboard\?\.writeText/);
+  assert.match(patternLab, /Field note shared\./);
+  assert.match(patternLab, /Field note copied to clipboard\./);
+  assert.match(patternLab, /Automatic sharing failed\./);
+  assert.match(patternLab, /aria-live="polite"/);
+  assert.match(patternLab, /readOnly/);
+  assert.match(patternLab, /data-manual-fallback/);
   assert.match(styles, /--muted:\s*#a8b4c0/i);
   assert.match(styles, /--muted-subtle:\s*#96a3af/i);
   assert.doesNotMatch(
@@ -159,7 +247,7 @@ test("publishes a truthful machine-readable prelaunch manifest", async () => {
   assert.equal(manifest.contractAddress, null);
   assert.equal(manifest.updated, "2026-08-11");
   assert.deepEqual(manifest.officialLinks, {
-    website: null,
+    website: "https://pattern4663.com",
     x: "https://x.com/Pattern4663",
     explorer: null,
     launchVenue: null,

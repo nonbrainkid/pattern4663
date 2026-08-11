@@ -1,27 +1,8 @@
-import type { CSSProperties } from "react";
-import { PatternMark } from "./_components/PatternMark";
 import { PatternAtlas } from "./_components/PatternAtlas";
+import { PatternLab } from "./_components/PatternLab";
+import { PatternMark } from "./_components/PatternMark";
 import { SignalField } from "./_components/SignalField";
 import { contractLabel, project, statusLabel } from "./_data/project";
-
-const LAB_NOISE = Array.from({ length: 36 }, (_, index) => {
-  const column = index % 9;
-  const row = Math.floor(index / 9);
-  const offsetX = ((index * 17) % 11) - 5;
-  const offsetY = ((index * 23) % 13) - 6;
-
-  return {
-    left: `${8 + column * 10.4}%`,
-    top: `${20 + row * 19}%`,
-    style: {
-      "--scatter-x": `${offsetX * 2.1}px`,
-      "--scatter-y": `${offsetY * 1.8}px`,
-      "--delay": `${(index % 7) * 45}ms`,
-    } as CSSProperties,
-  };
-});
-
-const SEQUENCE = [4, 6, 6, 3, 4, 6, 6, 3, 4, 6, 6, 3];
 
 function SectionLabel({ children }: { children: React.ReactNode }) {
   return (
@@ -32,66 +13,12 @@ function SectionLabel({ children }: { children: React.ReactNode }) {
   );
 }
 
-function NoiseDiagram() {
-  return (
-    <div className="lab-diagram noise-diagram" aria-hidden="true">
-      <div className="noise-diagram__axis noise-diagram__axis--x" />
-      <div className="noise-diagram__axis noise-diagram__axis--y" />
-      {LAB_NOISE.map((dot, index) => (
-        <span
-          className={index === 22 ? "is-signal" : ""}
-          key={`noise-${index}`}
-          style={{ left: dot.left, top: dot.top, ...dot.style }}
-        />
-      ))}
-    </div>
-  );
-}
-
-function SequenceDiagram() {
-  return (
-    <div className="lab-diagram sequence-diagram" aria-hidden="true">
-      <div className="sequence-diagram__bars">
-        {SEQUENCE.map((value, index) => (
-          <span
-            className={index === 7 ? "is-signal" : ""}
-            key={`sequence-${index}`}
-            style={
-              {
-                "--bar-height": `${value * 10 + 12}%`,
-                "--bar-delay": `${index * 70}ms`,
-              } as CSSProperties
-            }
-          />
-        ))}
-      </div>
-      <div className="sequence-diagram__digits">
-        <span>4</span><span>6</span><span>6</span><span>3</span>
-      </div>
-    </div>
-  );
-}
-
-function RecursionDiagram() {
-  return (
-    <div className="lab-diagram recursion-diagram" aria-hidden="true">
-      <span className="recursion-diagram__frame recursion-diagram__frame--one" />
-      <span className="recursion-diagram__frame recursion-diagram__frame--two" />
-      <span className="recursion-diagram__frame recursion-diagram__frame--three" />
-      <span className="recursion-diagram__frame recursion-diagram__frame--four" />
-      <span className="recursion-diagram__signal" />
-    </div>
-  );
-}
-
 export default function Home() {
   const chainName = project.chainName.toUpperCase();
 
   return (
     <div className="site-shell" id="top">
-      <a className="skip-link" href="#main-content">
-        Skip to content
-      </a>
+      <a className="skip-link" href="#main-content">Skip to content</a>
 
       <header className="site-header">
         <div className="site-header__inner page-width">
@@ -99,18 +26,13 @@ export default function Home() {
             <PatternMark compact />
             <span className="brand__wordmark">{project.name}</span>
           </a>
-
           <nav className="site-nav" aria-label="Primary navigation">
-            <a href="#thesis">THESIS</a>
+            <a href="#belief">BELIEF</a>
             <a href="#lab">LAB</a>
             <a href="#atlas">ATLAS</a>
             <a href="#origin">ORIGIN</a>
           </nav>
-
-          <p className="site-header__signal">
-            <span>SIGNAL</span>
-            <strong>{project.chainId}</strong>
-          </p>
+          <p className="site-header__signal"><span>SIGNAL</span><strong>{project.chainId}</strong></p>
         </div>
       </header>
 
@@ -119,83 +41,50 @@ export default function Home() {
           <div className="hero__inner page-width">
             <div className="hero__copy">
               <p className="hero__eyebrow">
-                <span>{project.name}</span>
-                <span>SYMBOL / {project.symbol}</span>
+                <span>PRE-LAUNCH</span>
+                <span>{project.name} / ${project.symbol}</span>
                 <span>CHAIN {project.chainId}</span>
                 <span>INDEPENDENT</span>
               </p>
-
-              <h1 className="hero__title" id="hero-title">
-                SEE THE
-                <span>PATTERN.</span>
-              </h1>
-
-              <p className="hero__lead">
-                Everything is noise until you see the pattern.
-              </p>
+              <h1 className="hero__title" id="hero-title">LOOK BENEATH<span>THE NOISE.</span></h1>
+              <p className="hero__lead">The world becomes recognizable through patterns.</p>
               <p className="hero__sub">
-                A culture coin for people who find structure in the chaos.
+                Mathematics gives those patterns a language. PATTERN / ${project.symbol} is the
+                culture coin—and shared signal—for people who look twice.
               </p>
-
               <div className="hero__actions" aria-label="Primary actions">
                 <a className="action action--primary" href="#lab">
-                  <span>ENTER THE LAB</span>
-                  <span className="action__arrow" aria-hidden="true">↘</span>
+                  <span>TEST THE PATTERN</span><span className="action__arrow" aria-hidden="true">↘</span>
                 </a>
-                <a
-                  className="action action--quiet"
-                  href={project.xUrl ?? "#signal"}
-                  {...(project.xUrl
-                    ? { target: "_blank", rel: "noopener noreferrer" }
-                    : {})}
-                >
-                  <span>
-                    {project.xHandle ? `FOLLOW ${project.xHandle.toUpperCase()}` : "FOLLOW THE SIGNAL"}
-                  </span>
+                <a className="action action--quiet" href={project.xUrl ?? "#signal"}
+                  {...(project.xUrl ? { target: "_blank", rel: "noopener noreferrer" } : {})}>
+                  <span>{project.xHandle ? `FOLLOW ${project.xHandle.toUpperCase()}` : "FOLLOW THE SIGNAL"}</span>
                   <span className="action__arrow" aria-hidden="true">→</span>
                 </a>
               </div>
-
-              <p className="status-chip">
-                <span aria-hidden="true" />
-                {statusLabel()} / CONTRACT {contractLabel()}
-              </p>
+              <p className="status-chip"><span aria-hidden="true" />{statusLabel()} / CONTRACT {contractLabel()}</p>
             </div>
-
             <div className="hero__visual">
               <SignalField />
-              <p className="hero__field-label hero__field-label--top">
-                FIELD 01 / ACTIVE
-              </p>
-              <p className="hero__field-label hero__field-label--bottom">
-                NOISE → STRUCTURE
-              </p>
+              <p className="hero__field-label hero__field-label--top">PERCEPTION FIELD / ACTIVE</p>
+              <p className="hero__field-label hero__field-label--bottom">NOISE → STRUCTURE</p>
             </div>
           </div>
-          <div className="hero__scroll-cue" aria-hidden="true">
-            <span>SCROLL TO RESOLVE</span>
-            <i />
-          </div>
+          <div className="hero__scroll-cue" aria-hidden="true"><span>SCROLL TO RESOLVE</span><i /></div>
         </section>
 
-        <section className="thesis section" id="thesis" aria-labelledby="thesis-title">
+        <section className="belief section" id="belief" aria-labelledby="belief-title">
           <div className="page-width reveal">
-            <SectionLabel>THE THESIS</SectionLabel>
-            <div className="thesis__grid">
-              <h2 className="section-title thesis__title" id="thesis-title">
-                THE PATTERN WAS
-                <span>ALWAYS THERE.</span>
-              </h2>
-
-              <div className="thesis__content">
-                <div className="thesis__statements">
-                  <p><span>01</span>Crowds repeat.</p>
-                  <p><span>02</span>Markets rhyme.</p>
-                  <p><span>03</span>Code records the trace.</p>
-                </div>
-                <p className="thesis__body">
-                  Stay with the noise long enough and structure appears.
-                </p>
+            <SectionLabel>THE BELIEF</SectionLabel>
+            <div className="belief__grid">
+              <h2 className="section-title belief__title" id="belief-title">RECOGNITION HAS<span>A STRUCTURE.</span></h2>
+              <div className="belief__content">
+                <ol className="belief__steps">
+                  <li><span>01</span><div><strong>NOTICE</strong><p>Before a system is understood, it looks like noise. Repetition is the first clue.</p></div></li>
+                  <li><span>02</span><div><strong>EXPRESS</strong><p>A pattern becomes legible when it can be described: as a ratio, interval, sequence, distribution, or rule.</p></div></li>
+                  <li><span>03</span><div><strong>SIGNAL</strong><p>PATTERN turns that habit of looking beneath the surface into a shared cultural signal.</p></div></li>
+                </ol>
+                <p className="belief__close">Not prophecy. Not certainty. A way of seeing—and the discipline to test it.</p>
               </div>
             </div>
           </div>
@@ -205,72 +94,50 @@ export default function Home() {
           <div className="page-width">
             <div className="lab__heading reveal">
               <div>
-                <SectionLabel>PATTERN LAB</SectionLabel>
-                <h2 className="section-title" id="lab-title">ORDER IN PLAIN SIGHT.</h2>
+                <SectionLabel>PATTERN LAB / INTERACTIVE</SectionLabel>
+                <h2 className="section-title" id="lab-title">DON&apos;T TAKE THE CLAIM<span>ON FAITH.</span></h2>
               </div>
               <p>
-                Not decoration. Three small proofs that order can hide in plain sight.
+                Don&apos;t accept the thesis. Resolve it yourself. Move from noise to rule, then name the
+                missing interval. The point is not to predict an outcome. It is to feel the moment a rule becomes visible.
               </p>
             </div>
+            <PatternLab />
+          </div>
+        </section>
 
-            <div className="lab__grid">
-              <article className="lab-card">
-                <header className="lab-card__header">
-                  <p><span>01 /</span> NOISE FIELD</p>
-                  <span className="lab-card__state">ACTIVE</span>
-                </header>
-                <NoiseDiagram />
-                <p className="lab-card__copy">
-                  Move. Disturb the field. Watch it return to form.
-                </p>
-              </article>
-
-              <article className="lab-card">
-                <header className="lab-card__header">
-                  <p><span>02 /</span> SEQUENCE {project.chainId}</p>
-                  <span className="lab-card__state">LOOP</span>
-                </header>
-                <SequenceDiagram />
-                <p className="lab-card__copy">
-                  A deterministic rhythm built from one number.
-                </p>
-              </article>
-
-              <article className="lab-card">
-                <header className="lab-card__header">
-                  <p><span>03 /</span> RECURSION</p>
-                  <span className="lab-card__state">∞</span>
-                </header>
-                <RecursionDiagram />
-                <p className="lab-card__copy">
-                  Every solved pattern reveals another layer.
-                </p>
-              </article>
+        <section className="bridge section" aria-labelledby="bridge-title">
+          <div className="page-width bridge__grid reveal">
+            <div>
+              <SectionLabel>ONE INSTINCT / FOUR SYSTEMS</SectionLabel>
+              <h2 className="section-title" id="bridge-title">DIFFERENT SURFACES.<span>THE SAME SEARCH.</span></h2>
+            </div>
+            <div className="bridge__copy">
+              <p>A sunflower distributes growth through repeated angles. Code turns compact rules into repeatable behavior. Chess compresses an entire position into one forced geometry. Markets produce recurring shapes because people and mechanisms repeat—but the same shape does not guarantee the same outcome.</p>
+              <p>PATTERN is about the discipline of finding structure, naming it precisely, and knowing where the pattern ends.</p>
             </div>
           </div>
         </section>
 
         <PatternAtlas />
 
+        <section className="manifesto section" aria-labelledby="manifesto-title">
+          <div className="page-width manifesto__inner reveal">
+            <SectionLabel>THE MANIFESTO</SectionLabel>
+            <h2 className="section-title" id="manifesto-title">LOOK TWICE.<span>TEST WHAT YOU SEE.</span></h2>
+            <p>Noise is infinite. Attention is finite. Patterns are how the world becomes legible—and mathematics is how intuition is forced to explain itself. PATTERN / ${project.symbol} is for people who look twice, test what they think they see, and refuse to confuse a recurring shape with a guaranteed future. The pattern was already there. The signal is choosing to see it.</p>
+          </div>
+        </section>
+
         <section className="origin section" id="origin" aria-labelledby="origin-title">
           <div className="page-width origin__grid reveal">
             <div className="origin__intro">
-              <SectionLabel>ORIGIN</SectionLabel>
-              <h2 className="section-title" id="origin-title">
-                DESIGNED FOR
-                <span>CHAIN {project.chainId}.</span>
-              </h2>
-              <p>
-                No mystery addresses. The canonical contract will appear here and on
-                the official account at launch.
-              </p>
+              <SectionLabel>ORIGIN / CHAIN {project.chainId}</SectionLabel>
+              <h2 className="section-title" id="origin-title">A CULTURAL SIGNAL,<span>AN ON-CHAIN RECORD.</span></h2>
+              <p>PATTERN / ${project.symbol} is independently designed for Robinhood Chain. The token is not live. No contract address is canonical until it appears here, on {project.xHandle}, and on the chain {project.chainId} explorer.</p>
             </div>
-
             <div className="origin__record">
-              <div className="origin__record-head">
-                <span>NETWORK RECORD</span>
-                <span>REV / 00</span>
-              </div>
+              <div className="origin__record-head"><span>NETWORK RECORD</span><span>REV / 00</span></div>
               <dl>
                 <div><dt>NETWORK</dt><dd>{chainName}</dd></div>
                 <div><dt>CHAIN ID</dt><dd className="origin__number">{project.chainId}</dd></div>
@@ -278,56 +145,24 @@ export default function Home() {
                 <div><dt>STATUS</dt><dd><span className="record-status">{statusLabel()}</span></dd></div>
                 <div><dt>CONTRACT</dt><dd className="origin__muted">{contractLabel()}</dd></div>
               </dl>
-              <p className="origin__checksum" aria-hidden="true">
-                VERIFY_SOURCE / VERIFY_CHAIN / VERIFY_ADDRESS
-              </p>
+              <p className="origin__checksum">VERIFY DOMAIN / VERIFY CHAIN / VERIFY FULL ADDRESS</p>
             </div>
           </div>
         </section>
 
         <section className="signal-cta section" id="signal" aria-labelledby="signal-title">
-          <div className="signal-cta__field" aria-hidden="true">
-            <PatternMark />
-          </div>
+          <div className="signal-cta__field" aria-hidden="true"><PatternMark /></div>
           <div className="page-width signal-cta__inner reveal">
             <SectionLabel>SIGNAL / {project.chainId}</SectionLabel>
-            <h2 className="signal-cta__title" id="signal-title">
-              ONE SIGNAL.
-              <span>ONE CONTRACT.</span>
-            </h2>
-            <p>
-              Follow the project account. Verify the address. Then decide for yourself.
-            </p>
+            <h2 className="signal-cta__title" id="signal-title">IF YOU LOOK TWICE,<span>THIS IS YOUR SIGNAL.</span></h2>
+            <p>Follow the canonical account for PATTERN / ${project.symbol}. At launch, verify every character of the contract before interacting. Ignore DMs, reply addresses, and unofficial links.</p>
             <div className="signal-cta__actions">
-              {project.xUrl ? (
-                <a
-                  className="action action--primary"
-                  href={project.xUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  <span>FOLLOW {project.xHandle ?? project.name}</span>
-                  <span className="action__arrow" aria-hidden="true">→</span>
-                </a>
-              ) : (
-                <button
-                  className="action action--primary action--pending"
-                  disabled
-                  type="button"
-                >
-                  <span>ACCOUNT LINK PENDING</span>
-                  <span className="action__arrow" aria-hidden="true">··</span>
-                </button>
-              )}
-              {project.contractAddress && project.explorerUrl ? (
-                <a className="action action--quiet" href={project.explorerUrl}>
-                  VIEW VERIFIED CONTRACT
-                </a>
-              ) : (
-                <span className="action action--disabled" aria-disabled="true">
-                  CONTRACT NOT LIVE
-                </span>
-              )}
+              <a className="action action--primary" href={project.xUrl ?? "#top"}
+                {...(project.xUrl ? { target: "_blank", rel: "noopener noreferrer" } : {})}>
+                <span>FOLLOW {project.xHandle ?? project.name}</span><span className="action__arrow" aria-hidden="true">→</span>
+              </a>
+              <a className="action action--quiet" href="#atlas">RETURN TO THE ATLAS</a>
+              <span className="signal-cta__pending">PRE-LAUNCH / CONTRACT NOT PUBLISHED</span>
             </div>
           </div>
         </section>
@@ -335,21 +170,15 @@ export default function Home() {
         <aside className="disclosure" aria-label="Risk disclosure">
           <div className="page-width disclosure__inner">
             <p className="disclosure__label">DISCLOSURE / READ BEFORE INTERACTING</p>
-            <p>
-              {project.disclosures.independence} {project.disclosures.marketRisk}{" "}
-              {project.disclosures.verification}
-            </p>
+            <p>{project.disclosures.independence} {project.disclosures.marketRisk} {project.disclosures.verification}</p>
           </div>
         </aside>
       </main>
 
       <footer className="site-footer">
         <div className="page-width site-footer__inner">
-          <a className="brand" href="#top" aria-label={`${project.name}, back to top`}>
-            <PatternMark compact />
-            <span className="brand__wordmark">{project.name}</span>
-          </a>
-          <p>SEE STRUCTURE. VERIFY EVERYTHING.</p>
+          <a className="brand" href="#top" aria-label={`${project.name}, back to top`}><PatternMark compact /><span className="brand__wordmark">{project.name}</span></a>
+          <p>LOOK TWICE. VERIFY EVERYTHING.</p>
           <p className="site-footer__chain">CHAIN / {project.chainId}</p>
         </div>
       </footer>

@@ -443,12 +443,12 @@ export function PatternAtlas() {
           <div>
             <AtlasSectionLabel>PATTERN ATLAS / FIELD NOTES</AtlasSectionLabel>
             <h2 className="section-title atlas__title" id="atlas-title">
-              ORDER HIDES EVERYWHERE.
+              ONE INSTINCT. FOUR SYSTEMS.
             </h2>
           </div>
           <p className="atlas__intro">
-            From petals to polynomials, from positions to price charts: patterns
-            compress complexity into something we can see.
+            Test the same instinct across growth, approximation, position, and
+            synthetic market shapes. Similarity begins the question; method answers it.
           </p>
         </header>
 
@@ -473,7 +473,7 @@ export function PatternAtlas() {
                 <PhyllotaxisPlot />
                 <div className="atlas-module__copy">
                   <p className="atlas-module__eyebrow">GOLDEN ANGLE / PHYLLOTAXIS</p>
-                  <h3>ONE TURN.<br />ROOM FOR THE NEXT.</h3>
+                  <h3>GROWTH LEAVES<br />GEOMETRY.</h3>
                   <dl className="atlas-metrics">
                     <div><dt>φ</dt><dd>1.6180339887</dd></div>
                     <div><dt>ANGLE</dt><dd>137.507764°</dd></div>
@@ -483,8 +483,8 @@ export function PatternAtlas() {
                     <p>θ = 360° / φ² ≈ 137.507764°</p>
                   </div>
                   <p>
-                    A repeated turn distributes new growth through available space.
-                    Not a magic law — a recurring solution to packing and exposure.
+                    Repeated angles can distribute new growth through available space.
+                    The golden angle is one recurring solution—not a universal law.
                   </p>
                   <p className="golden-caveat">
                     Some plants approximate it; nature does not obey φ as a universal
@@ -502,11 +502,11 @@ export function PatternAtlas() {
               <div className="atlas-module__taylor-intro">
                 <div>
                   <p className="atlas-module__eyebrow">TAYLOR / LOCAL TRUTH</p>
-                  <h3>BUILD THE CURVE<br />ONE TERM AT A TIME.</h3>
+                  <h3>A SMALL RULE CAN<br />REBUILD A CURVE.</h3>
                 </div>
                 <p>
-                  Near one point, derivatives turn a curve into a polynomial. Add
-                  terms and the local pattern resolves farther.
+                  A few local terms can approximate a continuous form. Add one rule
+                  at a time and the larger shape becomes recognizable.
                 </p>
               </div>
 
@@ -548,10 +548,10 @@ export function PatternAtlas() {
               <div className="atlas-module__chess-grid">
                 <div className="atlas-module__copy">
                   <p className="atlas-module__eyebrow">CHESS / POSITIONAL PATTERN</p>
-                  <h3>THE BOARD CLOSES.<br />ONE FILE OPENS.</h3>
+                  <h3>ONE LINE RESOLVES<br />THE BOARD.</h3>
                   <p>
-                    The back rank is sealed by its own pawns. The open e-file turns
-                    geometry into mate.
+                    The move matters because the position gives it meaning. Once the
+                    geometry is seen, Re8# stops looking surprising.
                   </p>
                   <button
                     aria-controls="chess-move-result"
@@ -560,7 +560,7 @@ export function PatternAtlas() {
                     onClick={() => setMoveRevealed((current) => !current)}
                     type="button"
                   >
-                    <span>{moveRevealed ? "HIDE THE MOVE" : "REVEAL THE MOVE"}</span>
+                    <span>{moveRevealed ? "HIDE THE GEOMETRY" : "REVEAL THE GEOMETRY"}</span>
                     <span aria-hidden="true">
                       {moveRevealed ? "E8 → E1" : "E1 → E8"}
                     </span>
@@ -572,7 +572,7 @@ export function PatternAtlas() {
                     id="chess-move-result"
                   >
                     <strong>Re8#</strong>
-                    <span>CHECKMATE / FORCED</span>
+                    <span>PATTERN RESOLVED</span>
                   </p>
                 </div>
                 <ChessBoard revealed={moveRevealed} />
@@ -584,14 +584,15 @@ export function PatternAtlas() {
                 <p><span>04 /</span> RESEARCH PROTOCOL</p>
                 <span>SYNTHETIC CURVES</span>
               </header>
-              <div className="market-warning">ILLUSTRATIVE / NOT MARKET DATA</div>
+              <div className="market-warning">SYNTHETIC / NOT MARKET DATA</div>
               <div className="atlas-module__market-grid">
                 <div>
                   <p className="atlas-module__eyebrow">MARKET ECHO / PATTERN INDEX</p>
-                  <h3>CHARTS REPEAT SHAPES. OUTCOMES DO NOT REPEAT ON COMMAND.</h3>
+                  <h3>SIMILARITY IS A QUESTION. NOT AN ANSWER.</h3>
                   <p className="market-hypothesis">
-                    Token launches may share measurable structures in attention,
-                    liquidity and retention. That is a hypothesis to test — not a promise.
+                    Attention, liquidity, and participation can form recurring shapes.
+                    Those similarities are hypotheses to test—not forecasts, promises,
+                    or trading signals.
                   </p>
                   <MarketPlot />
                 </div>
@@ -608,10 +609,10 @@ export function PatternAtlas() {
                     <div><dt>RESULT</dt><dd>NOT CLAIMED</dd></div>
                   </dl>
                   <p className="research-record__close">
-                    When we make the claim, the data and method ship with it.
+                    If evidence supports a claim, the data, method, and limits must ship with it.
                   </p>
                   <p className="market-caveat">PATTERN FOUND ≠ FUTURE GUARANTEED</p>
-                  <p className="research-record__footer">METHODOLOGY BEFORE CONCLUSIONS</p>
+                  <p className="research-record__footer">METHOD BEFORE INTERPRETATION</p>
                 </div>
               </div>
             </article>

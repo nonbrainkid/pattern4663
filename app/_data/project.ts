@@ -31,16 +31,16 @@ export const project: ProjectConfig = Object.freeze({
   contractAddress: null,
   xHandle: "@Pattern4663",
   xUrl: "https://x.com/Pattern4663",
-  canonicalUrl: null,
+  canonicalUrl: "https://pattern4663.com",
   launchVenue: null,
   explorerUrl: null,
   disclosures: Object.freeze({
     independence:
-      "PATTERN is an independent community project. Not affiliated with or endorsed by Robinhood Markets, Inc.",
+      "PATTERN is an independent culture coin designed for Robinhood Chain. It is not issued, sponsored, endorsed, or operated by Robinhood.",
     marketRisk:
-      "No promise of profit, utility, or listing. Crypto assets are risky.",
+      "No listing, financial return, or utility is promised. PATTERN ATLAS is editorial and educational content, not financial advice or a trading signal.",
     verification:
-      "Verify the canonical contract address before interacting.",
+      "Verify the contract address on the canonical domain and Robinhood Chain explorer before interacting.",
     prelaunch:
       "The token contract is not deployed or published. No contract address is official before this record is updated.",
   }),
