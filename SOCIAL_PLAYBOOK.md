@@ -1,201 +1,198 @@
 # PATTERN Social Playbook
 
-Version 1.0 — pre-launch operating copy
+Version 2.0 — live-state community operations
 
-## Non-negotiable launch gate
+Snapshot checked: **2026-08-12 10:59 +06:00 (04:59 UTC)**. Use [`docs/LIVE_SOURCE_OF_TRUTH.md`](docs/LIVE_SOURCE_OF_TRUTH.md) for identity and [`docs/CM_VERIFIED_BRIEF.md`](docs/CM_VERIFIED_BRIEF.md) for the current Claude CM handoff.
 
-PATTERN is pre-launch. Until deployment is verified, do not publish a contract address and do not use `live`, `launched`, or `Born on chain 4663`. `T0` in this playbook means the point **after** the deployment, exact contract address, canonical domain, and announcement copy have all been verified—not the moment a deployment transaction is submitted.
+## Queue boundary
 
-## Profile setup
+One Claude community-manager queue is already operating on an hourly cadence. This playbook does not create another queue, add an automation, change timing, or send any post.
 
-| Field | Production value | Asset or rule |
-| --- | --- | --- |
-| Display name | `PATTERN` | Exact spelling; no ticker appended |
-| Official handle | `@Pattern4663` | Founder-supplied project account; keep recovery, strong authentication, and impersonation monitoring active |
-| Pre-launch bio | `Culture coin for people who see structure in the noise. Designed for chain 4663. Independent. Not affiliated with Robinhood.` | 124 characters including spaces |
-| Post-launch bio | `Culture coin for people who see structure in the noise. Born on chain 4663. Independent. Not affiliated with Robinhood.` | 119 characters; use only after verified deployment |
-| Location | `CHAIN 4663` | Keep uppercase |
-| Website label | `ENTER THE PATTERN` | Link only to the confirmed canonical domain; never a mirror, staging URL, shortener, or link hub |
-| Avatar | `public/brand/pattern_x_avatar_800x800_v01.png` | Use as delivered; confirm the P remains legible in the circular crop |
-| Header | `public/brand/pattern_x_header_1500x500_v01.png` | Check mobile and desktop crops before saving |
-| Pinned post | Pre-launch thread below | Replace only after the post-launch gate passes |
+- Feed verified copy into the existing queue only.
+- Do not duplicate a slot, backfill an old launch sequence, or retime the queue.
+- If a scheduled factual post cannot be freshly verified, hold that post and keep the next safe narrative slot; do not invent continuity.
+- Wallet actions, paid promotion, direct-message campaigns, and platform-account changes require separate operator approval.
 
-Do not enter `[CANONICAL DOMAIN]` into a public profile. It is an editorial placeholder and must be replaced with the verified domain first.
+## Canonical live identity
 
-## Pre-launch pinned thread
+| Field | Exact value |
+| --- | --- |
+| Display name | `PATTERN` |
+| Handle | `@Pattern4663` / <https://x.com/Pattern4663> |
+| Token | `PATTERN / $P4663` |
+| Network | `Robinhood Chain mainnet` |
+| Chain ID | `4663` |
+| Contract address | `0xB74E8B647517813D8b3790240e98F2E9A09cf5a3` |
+| Website | <https://pattern4663.com> |
+| Explorer | <https://robinhoodchain.blockscout.com/token/0xB74E8B647517813D8b3790240e98F2E9A09cf5a3> |
+| pons launch page | <https://www.ponsfamily.com/launchpad/0xB74E8B647517813D8b3790240e98F2E9A09cf5a3> |
 
-Publish as a six-post thread. This copy intentionally contains no contract address and no claim that the token is deployed.
+Recommended live bio:
 
-**1/6**
+> PATTERN / $P4663 • Chain 4663 • Independent; not endorsed by Robinhood or pons. Verify CA on pattern4663.com and Blockscout. Ignore DMs.
 
-> Everything is noise until you see the pattern.
->
-> PATTERN is an independent culture coin designed for chain 4663.
+Recommended profile website: `https://pattern4663.com` only. Do not use a staging host, shortener, mirror, or link hub as the identity anchor.
 
-**2/6**
+## Pinned verification thread
 
-> All patterns reduce to mathematics.
->
-> Ours begins with a signal: 4663.
+The following is ready for operator review. Check every link and all 42 CA characters immediately before publishing or replacing pinned content.
 
-**3/6**
-
-> Not a token for Vlad. Not a Robinhood project. No affiliation.
->
-> Just culture for people who see structure in the noise.
-
-**4/6**
-
-> The mark is a modular P: order in the grid, with one cyan anomaly outside the expected position.
->
-> The break reveals the system.
-
-**5/6**
-
-> Pre-launch. No official contract address has been published.
->
-> Ignore addresses, links, or DMs claiming otherwise.
-
-**6/6**
-
-> Watch the signal.
->
-> Follow PATTERN. See what resolves.
-
-## Post-launch pinned thread
-
-**DO NOT PUBLISH THIS THREAD** until deployment is verified and both placeholders below have been replaced with confirmed values. A second operator should compare the contract address character for character and open the canonical domain from a clean browser session before approval.
-
-**1/7**
+**1/5**
 
 > Everything is noise until you see the pattern.
 >
-> PATTERN was born on chain 4663.
+> PATTERN / $P4663 is live on Robinhood Chain mainnet, chain ID 4663.
 
-**2/7**
+**2/5**
 
-> Verified contract address:
+> Canonical contract address:
 >
-> `[VERIFIED CA]`
+> `0xB74E8B647517813D8b3790240e98F2E9A09cf5a3`
 >
-> Match every character before you interact.
+> Match every character on Blockscout before interacting.
 
-**3/7**
+**3/5**
 
-> Enter the pattern:
+> Website: https://pattern4663.com
 >
-> `[CANONICAL DOMAIN]`
+> Explorer: https://robinhoodchain.blockscout.com/token/0xB74E8B647517813D8b3790240e98F2E9A09cf5a3
 >
 > No mirrors. No shortened links.
 
-**4/7**
+**4/5**
 
-> PATTERN is independent. It is not affiliated with, endorsed by, or an official project of Robinhood.
-
-**5/7**
-
-> A culture coin is not a promise.
+> pons launch page:
 >
-> No guaranteed profit. No promised listing. No invented utility.
-
-**6/7**
-
-> Verify the contract. Verify the domain. Ignore unsolicited DMs.
+> https://www.ponsfamily.com/launchpad/0xB74E8B647517813D8b3790240e98F2E9A09cf5a3
 >
-> PATTERN will never ask for your seed phrase.
+> Venue state and market values can change. Verify them on the page; do not rely on screenshots.
 
-**7/7**
+**5/5**
 
-> The signal is 4663.
+> PATTERN is independent. It is not issued, sponsored, endorsed, or operated by Robinhood or pons.
 >
-> See the pattern. Enter through the canonical domain.
+> No listing, financial return, or utility is promised. Ignore unsolicited DMs and different contract addresses.
 
-After replacement, search the full draft for `[` and `]`. Any remaining editorial placeholder blocks publication.
+## Hourly content system
 
-## Launch-day cadence
+Use one of these roles per queue slot. A thread or follow-up should occupy its intended slot rather than create an extra unscheduled post.
 
-All timing is relative to verified `T0`; no timezone is implied.
-
-| Time | Action | Copy or asset |
+| Role | Purpose | Safe CTA |
 | --- | --- | --- |
-| `T-24h` | Reassert the narrative | `Everything is noise until you see the pattern.` with `pattern_quote_1080x1080_v01.png`; no countdown promise if timing may move |
-| `T-3h` | Publish the safety reminder | `No official contract address has been published. Ignore addresses, links, and unsolicited DMs.` |
-| `T0` | Replace the pinned thread | Publish the verified seven-post launch thread, then update the bio and canonical website field |
-| `T+15m` | Repeat the verification path | Reply to post 2 with the verified CA and to post 3 with the canonical domain; do not introduce a new URL |
-| `T+1h` | Release the full visual | `pattern_master_signal-noise_3840x2160_v01.png` with one narrative line, no performance claims |
-| `T+4h` | Invite interpretation | Ask: `What did you notice first: the grid or the anomaly?` |
-| `T+12h` | Explain the mark | Use `pattern_instagram_square_1080x1080_v01.png` and the modular-P explanation |
-| `T+24h` | Publish a clean FAQ/safety recap | Repeat verified sources and answer only with confirmed facts; use metrics only if directly verified and genuinely useful |
+| Narrative | Build the worldview around signal, noise, mathematics, and attention | Ask what pattern the reader noticed |
+| Atlas | Explain golden angle, Taylor series, chess geometry, or Pattern Index method | Link to `https://pattern4663.com` |
+| Verification | Repeat exact CA, chain ID, site, and explorer | Ask readers to compare every character |
+| Community | Invite an observation, interpretation, or visual reading | Ask for a pattern, not a prediction |
+| Safety | Pre-bunk impersonation, bad links, or stale screenshots | Tell readers to stop if identifiers differ |
+| Disclosure | Reinforce independence and absence of promises | Link to canonical sources, not financial claims |
 
-If verification fails or the deployment changes, hold `T0`, keep the pre-launch profile intact, and issue no hints about an unconfirmed address.
+Avoid consecutive high-density verification posts unless there is an active scam incident. Do not let narrative posts imply price movement, expected returns, holder status, access, or rewards.
 
-## Ten reusable short posts
-
-These are ready-to-post lines, not claims about launch status.
+## Reusable live-safe posts
 
 1. `Everything is noise until you see the pattern.`
-2. `Noise is abundant. Pattern is earned.`
-3. `The crowd sees motion. You see structure.`
-4. `One dot breaks rank. The whole system becomes visible.`
-5. `The grid is quiet. The anomaly is not.`
-6. `All patterns reduce to mathematics.`
-7. `4663 is the signal.`
-8. `Stop scrolling. Start noticing.`
-9. `PATTERN: structure hiding in plain sight.`
-10. `What did you notice first: the grid or the anomaly?`
+2. `Noise is infinite. Attention is finite. Pattern is what survives the second look.`
+3. `A pattern is not a prophecy. It is a structure you can describe—and test.`
+4. `One dot breaks rank. The whole grid becomes visible.`
+5. `The anomaly does not destroy the system. It reveals it.`
+6. `Ratios. Intervals. Sequences. Geometry. Different surfaces, the same search.`
+7. `Look twice. Then explain what you think you see.`
+8. `4663 is the chain ID, not a price target.`
+9. `A recurring market shape is a question, not an answer.`
+10. `PATTERN / $P4663: structure hiding in plain sight.`
+11. `What did you notice first: the grid or the cyan anomaly?`
+12. `Method turns an observation into something others can test.`
 
-Default to no hashtags. If a campaign needs one, use one verified project tag consistently; never stack generic crypto tags or use engagement bait.
+Default to no hashtags. Do not stack generic crypto tags or use financial urgency as engagement bait.
 
 ## Community reply voice
 
-- Reply in one or two short sentences. Sound observant, calm, and certain only where facts are certain.
-- Answer the question first. Do not hide missing information behind lore.
-- Say `not announced` or `not verified` instead of teasing an answer.
+- Answer in one or two clear sentences. Be certain only where sources are certain.
+- Use `not verified` or `not announced` instead of teasing missing information.
 - Use the brand vocabulary naturally: signal, noise, pattern, grid, anomaly, `4663`.
-- Avoid corporate filler, forced slang, fake math jargon, tribal aggression, and price talk.
-- Never validate a contract, link, listing, partnership, holder count, or launch status from memory. Check the approved source first.
-- Do not imply that following, buying, or holding will produce access, status, returns, or rewards.
+- Do not validate a contract, link, listing, affiliation, holder count, market value, venue phase, graduation, pool, or audit from memory.
+- Do not imply that buying, holding, following, or replying produces access, status, returns, rewards, or allocation.
+- Do not troubleshoot transactions in public replies or request wallet secrets.
+- Never DM first to provide a contract address, financial instruction, or wallet-support request.
 
-Approved pre-launch CA reply:
+Approved canonical-CA reply:
 
-> No official PATTERN contract address has been published. Do not connect or transact. Watch this account and the canonical domain when announced for verified details.
+> PATTERN / $P4663 is on Robinhood Chain mainnet, chain ID 4663. Canonical CA: `0xB74E8B647517813D8b3790240e98F2E9A09cf5a3`. Verify it on https://pattern4663.com and https://robinhoodchain.blockscout.com/token/0xB74E8B647517813D8b3790240e98F2E9A09cf5a3.
 
-Scam-response template after the canonical domain is public:
+Approved pons reply:
 
-> That address or link is not an official PATTERN source. Do not connect, sign, or transact. Verify only through this account and `[CANONICAL DOMAIN]`. PATTERN will never DM first or ask for a seed phrase.
+> The canonical PATTERN pons page is https://www.ponsfamily.com/launchpad/0xB74E8B647517813D8b3790240e98F2E9A09cf5a3. Its phase and market values are live data; check the page directly rather than relying on an earlier post.
 
-Replace the domain placeholder before posting. If the suspect item is still under investigation, change the first sentence to: `We have not verified that address or link.`
+Approved no-prediction reply:
 
-## Cross-platform reuse map
+> PATTERN ATLAS explores how patterns become visible. It does not predict token prices or provide a trading signal.
 
-| Platform | Profile assets | Publishing assets | Reuse rule |
-| --- | --- | --- | --- |
-| X | `pattern_x_avatar_800x800_v01.png`; `pattern_x_header_1500x500_v01.png` | `pattern_announcement_1080x1350_v01.png`, `pattern_quote_1080x1080_v01.png`, `pattern_master_signal-noise_3840x2160_v01.png` | Pin the correct launch-state thread; keep links in the canonical website field and verified launch post |
-| Instagram | `pattern_identity_avatar_master_2048_v01.png` | `pattern_instagram_portrait_1080x1350_v01.png`, `pattern_instagram_square_1080x1080_v01.png`, `pattern_story_1080x1920_v01.png` | Put the disclosure in bio and launch caption; Stories point only to the canonical domain |
-| Telegram / Discord | `pattern_identity_avatar_master_2048_v01.png` | `pattern_announcement_1080x1350_v01.png`, `pattern_quote_1080x1080_v01.png` | Pin a read-only verification message with the exact CA/domain after launch; disable or moderate link impersonation |
-| YouTube | `pattern_identity_avatar_master_2048_v01.png`; `pattern_youtube_banner_2560x1440_v01.png` | `pattern_master_signal-noise_3840x2160_v01.png` | Keep critical art and type inside the banner safe area; description links only to the canonical domain |
-| Farcaster | `pattern_identity_avatar_master_2048_v01.png` | `pattern_instagram_square_1080x1080_v01.png`, `pattern_quote_1080x1080_v01.png` | Reuse short X copy without implying platform-specific endorsement or availability |
-| Link previews | — | `pattern_og_1200x630_v01.png` via `public/og.png` | Preview title, description, image, and destination must all resolve to the same canonical domain |
+## Perishable facts
 
-Never publish `pattern_social_contact-sheet_v01.png`; it is an internal QA artifact.
+At **2026-08-12 10:59 +06:00**, the exact pons page reported `phase: 0`, `venue: curve`, and no pool identifiers. This is an expired-for-copy snapshot unless refreshed at publication time.
+
+For any factual post about price, market cap, volume, holder count, transfer count, curve progress, phase, graduation, pool, liquidity, or percentage change:
+
+1. open the primary source immediately before drafting;
+2. record value, URL, timestamp, and timezone internally;
+3. have a second operator check any graduation or pool statement;
+4. avoid scheduling the value far ahead;
+5. state `as observed at [time and timezone]` if the value must be public;
+6. never turn a snapshot into a promise or trend claim.
+
+The default is to omit market metrics.
+
+## Scam and impersonation replies
+
+Confirmed mismatch:
+
+> Security warning: that account, link, or contract is not canonical. Do not interact. Verify PATTERN through https://pattern4663.com, https://x.com/Pattern4663, and the Robinhood Chain explorer on chain 4663. Canonical CA: `0xB74E8B647517813D8b3790240e98F2E9A09cf5a3`.
+
+Still investigating:
+
+> We have not verified that account, link, or contract. Do not connect, sign, or transact while it is being checked. Use https://pattern4663.com and the exact Blockscout token page as the identity anchors.
+
+Capture evidence and follow [`docs/POST_LAUNCH_RUNBOOK.md`](docs/POST_LAUNCH_RUNBOOK.md). Do not invent a support email or ask the community to investigate a suspicious link with a wallet.
+
+## Cross-platform reuse
+
+| Platform | Profile assets | Publishing rule |
+| --- | --- | --- |
+| X | `pattern_x_avatar_800x800_v01.png`, `pattern_x_header_1500x500_v01.png` | Pin the live verification thread; use the existing queue only. |
+| Instagram | `pattern_identity_avatar_master_2048_v01.png` | Keep exact CA in copyable caption/profile text, not only in art. |
+| Telegram / Discord | `pattern_identity_avatar_master_2048_v01.png` | Pin a read-only verification message; moderate link impersonation. |
+| YouTube | `pattern_identity_avatar_master_2048_v01.png`, `pattern_youtube_banner_2560x1440_v01.png` | Description links only to `https://pattern4663.com`. |
+| Farcaster | `pattern_identity_avatar_master_2048_v01.png` | Reuse narrative copy without platform endorsement or availability claims. |
+| Link previews | `pattern_og_1200x630_v01.png` via `public/og.png` | Title, image, and destination must resolve to `https://pattern4663.com`. |
+
+Never publish either contact sheet. See the asset-state labels in [`public/brand/README.md`](public/brand/README.md).
+
+## HISTORICAL / DO NOT PUBLISH
+
+The former launch-state thread and countdown copy are retained only as campaign history in Git. They included statements such as:
+
+> **HISTORICAL / DO NOT PUBLISH:** `Pre-launch. No official contract address has been published.`
+
+> **HISTORICAL / DO NOT PUBLISH:** `The system is ready. The token is not live yet.`
+
+> **HISTORICAL / DO NOT PUBLISH:** `No official contract address has been published. Ignore addresses, links, and unsolicited DMs.`
+
+These quotations are false as current-state descriptions and must never enter the active Claude CM queue. Historical raster assets with baked launch-state labels remain unchanged for provenance; use a new versioned derivative if a design is rebuilt.
 
 ## Mandatory disclosure
 
-Use this exact long-form disclosure in the pinned launch thread, channel verification messages, and any context where affiliation could be inferred:
+> PATTERN is an independent culture coin launched on Robinhood Chain via pons. It is not issued, sponsored, endorsed, or operated by Robinhood or pons. The token is experimental and volatile. Availability can depend on jurisdiction. No listing, financial return, or utility is promised. PATTERN ATLAS is editorial and educational content, not financial advice or a trading signal. Verify the full contract address on the canonical domain and Robinhood Chain explorer before interacting.
 
-> PATTERN is an independent culture coin designed for chain 4663. It is not affiliated with, endorsed by, or an official project of Robinhood.
-
-The profile bio may use the approved compact form: `Independent. Not affiliated with Robinhood.` Do not hide either disclosure in an image, collapsed reply, or hashtag.
-
-## Banned wording and claims
+## Banned claims
 
 Never publish:
 
-- `official Robinhood coin`, `Robinhood-backed`, `powered by Robinhood`, `partnered with Robinhood`, `Vlad's coin`, or `token for Vlad` as a positive claim.
-- `guaranteed`, `safe investment`, `risk-free`, `will pump`, `100x`, `passive income`, price targets, return claims, or urgency tied to financial gain.
-- `listing confirmed`, `utility coming`, `exclusive access`, or roadmap promises unless separately approved and supported by public evidence; do not hint around this rule.
-- `live`, `launched`, `now on chain`, or `Born on chain 4663` before verified deployment.
-- Any unverified contract address, holder count, market data, partner, audit, exchange, launch time, or domain.
-- Language or visuals that copy Robinhood's logo, feather, brand green, interface, campaigns, or endorsement cues.
+- Robinhood or pons affiliation, sponsorship, approval, partnership, or endorsement;
+- guaranteed, safe, risk-free, audited, rug-proof, or inevitable-return language;
+- price targets, `100x`, `moon`, passive-income framing, or financial urgency;
+- listing, exchange support, graduation, pool, or liquidity claims without fresh primary evidence and required approval;
+- utility, governance, rewards, yield, revenue share, buyback, or access promises without a shipped public mechanism and risk disclosure;
+- static price, market cap, volume, holder count, or transfer count copied from memory or an earlier screenshot;
+- claims that mathematics, the Atlas, or Pattern Index predicts token performance.
 
-When a fact is not verified, the brand answer is simple: `Not announced.`
+When a fact is not verified, the brand answer is: `Not verified.`

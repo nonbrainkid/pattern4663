@@ -1,8 +1,9 @@
 "use client";
 
 import type { CSSProperties } from "react";
-import { useMemo, useReducer, useState } from "react";
+import { useEffect, useMemo, useReducer, useRef, useState } from "react";
 import { PatternMark } from "./PatternMark";
+import { dispatchPatternAnalytics } from "../_lib/analytics";
 import {
   canonicalShareUrl,
   createFieldNote,
@@ -113,7 +114,15 @@ export function PatternLab() {
     resolverState as ResolverState;
   const [lens, setLens] = useState<Lens | null>(null);
   const [shareState, setShareState] = useState<ShareState>("idle");
+  const reportedResolution = useRef(false);
   const fieldNote = useMemo(() => createFieldNote(lens), [lens]);
+
+  useEffect(() => {
+    if (!solved || reportedResolution.current) return;
+
+    reportedResolution.current = true;
+    dispatchPatternAnalytics({ event: "lab_resolved" });
+  }, [solved]);
 
   const setResolution = (next: number) => {
     dispatch({ type: "SET_PHASE", phase: next });
@@ -133,7 +142,13 @@ export function PatternLab() {
       if (typeof navigator.share === "function") {
         await navigator.share({ title: "PATTERN / P4663", text: fieldNote, url });
         const outcome = shareOutcome("native");
-        if (outcome === "shared") setShareState(outcome);
+        if (outcome === "shared") {
+          setShareState(outcome);
+          dispatchPatternAnalytics({
+            event: "field_note_action",
+            action: "share",
+          });
+        }
         return;
       }
 
@@ -141,7 +156,13 @@ export function PatternLab() {
       if (!navigator.clipboard?.writeText) throw new Error("Clipboard unavailable");
       await navigator.clipboard.writeText(`${fieldNote}\n${url}`);
       const outcome = shareOutcome("clipboard");
-      if (outcome === "copied") setShareState(outcome);
+      if (outcome === "copied") {
+        setShareState(outcome);
+        dispatchPatternAnalytics({
+          event: "field_note_action",
+          action: "copy",
+        });
+      }
     } catch (error) {
       const outcome = shareOutcome(channel, error);
       if (outcome === "cancelled") return;

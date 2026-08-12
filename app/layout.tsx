@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { headers } from "next/headers";
 import { project } from "./_data/project";
+import { SiteAnalytics } from "./_components/SiteAnalytics";
 import "./globals.css";
 
 const TITLE = `${project.name} / $${project.symbol} \u2014 Look Beneath the Noise`;
@@ -112,6 +113,7 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
+        <SiteAnalytics />
         {children}
       </body>
     </html>

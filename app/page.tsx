@@ -3,6 +3,7 @@ import { PatternLab } from "./_components/PatternLab";
 import { PatternMark } from "./_components/PatternMark";
 import { SignalField } from "./_components/SignalField";
 import { contractLabel, project, statusLabel } from "./_data/project";
+import Link from "next/link";
 
 function SectionLabel({ children }: { children: React.ReactNode }) {
   return (
@@ -31,6 +32,7 @@ export default function Home() {
             <a href="#lab">LAB</a>
             <a href="#atlas">ATLAS</a>
             <a href="#origin">ORIGIN</a>
+            <Link className="site-nav__verify" href="/verify">VERIFY</Link>
           </nav>
           <p className="site-header__signal"><span>SIGNAL</span><strong>{project.chainId}</strong></p>
         </div>
@@ -136,6 +138,9 @@ export default function Home() {
               <SectionLabel>ORIGIN / CHAIN {project.chainId}</SectionLabel>
               <h2 className="section-title" id="origin-title">A CULTURAL SIGNAL,<span>AN ON-CHAIN RECORD.</span></h2>
               <p>PATTERN / ${project.symbol} was independently launched on Robinhood Chain via pons. Neither pons nor Robinhood sponsors or endorses the token. Verify this canonical record before interacting.</p>
+              <Link className="origin__verify-link" href="/verify">
+                OPEN CANONICAL VERIFY RECORD <span aria-hidden="true">→</span>
+              </Link>
             </div>
             <div className="origin__record">
               <div className="origin__record-head"><span>NETWORK RECORD</span><span>REV / 00</span></div>
@@ -190,7 +195,7 @@ export default function Home() {
       <footer className="site-footer">
         <div className="page-width site-footer__inner">
           <a className="brand" href="#top" aria-label={`${project.name}, back to top`}><PatternMark compact /><span className="brand__wordmark">{project.name}</span></a>
-          <p>LOOK TWICE. VERIFY EVERYTHING.</p>
+          <Link className="site-footer__verify" href="/verify">VERIFY FULL CA <span aria-hidden="true">→</span></Link>
           <p className="site-footer__chain">CHAIN / {project.chainId}</p>
         </div>
       </footer>

@@ -54,7 +54,7 @@ test("server-renders the production PATTERN landing page", async () => {
   assert.match(html, /ROBINHOOD CHAIN/);
   assert.match(html, /not issued, sponsored, endorsed, or operated by Robinhood or pons/i);
   assert.match(html, /No listing, financial return, or utility is promised\./i);
-  assert.match(html, /LOOK TWICE\. VERIFY EVERYTHING\./);
+  assert.match(html, /VERIFY FULL CA/);
   assert.match(html, /pattern_og_1200x630_v01\.png/);
   assert.match(html, /pattern_x_avatar_800x800_v01\.png/);
   assert.match(html, /PERCEPTION FIELD \/ ACTIVE/);
@@ -65,6 +65,9 @@ test("server-renders the production PATTERN landing page", async () => {
   assert.doesNotMatch(html, /ACCOUNT LINK PENDING/);
   assert.match(html, /TRADE ON PONS/);
   assert.match(html, /VERIFY ON EXPLORER/);
+  assert.match(html, /href="\/verify"/i);
+  assert.match(html, /OPEN CANONICAL VERIFY RECORD/);
+  assert.match(html, /VERIFY FULL CA/);
   assert.match(html, /0xB74E8B647517813D8b3790240e98F2E9A09cf5a3/);
   assert.match(html, /href="https:\/\/www\.ponsfamily\.com\/launchpad\/0xB74E8B647517813D8b3790240e98F2E9A09cf5a3"/i);
   assert.match(html, /href="https:\/\/robinhoodchain\.blockscout\.com\/token\/0xB74E8B647517813D8b3790240e98F2E9A09cf5a3"/i);
