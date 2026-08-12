@@ -27,6 +27,7 @@ drizzle.config.ts
 vite.config.ts
 *.tsbuildinfo
 
-public/og.png
 public/brand/**
+!public/brand/pattern_x_avatar_800x800_v01.png
 !public/brand/pattern_og_1200x630_v01.png
+!public/og.png

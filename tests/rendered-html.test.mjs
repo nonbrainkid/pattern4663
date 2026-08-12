@@ -289,3 +289,34 @@ test("publishes the exact machine-readable live token record", async () => {
   assert.match(manifest.disclosure, /not issued, sponsored, endorsed, or operated by Robinhood or pons/i);
   assert.doesNotMatch(JSON.stringify(manifest), /PRE-LAUNCH|CONTRACT NOT PUBLISHED|not deployed or published/i);
 });
+
+test("packages every runtime-referenced social asset for Vercel", async () => {
+  const [vercelIgnore, layout, avatar, ogAlias, canonicalOg] = await Promise.all([
+    readFile(new URL("../.vercelignore", import.meta.url), "utf8"),
+    readFile(new URL("../app/layout.tsx", import.meta.url), "utf8"),
+    readFile(
+      new URL("../public/brand/pattern_x_avatar_800x800_v01.png", import.meta.url),
+    ),
+    readFile(new URL("../public/og.png", import.meta.url)),
+    readFile(
+      new URL("../public/brand/pattern_og_1200x630_v01.png", import.meta.url),
+    ),
+  ]);
+
+  assert.match(layout, /ICON_IMAGE_PATH = "\/brand\/pattern_x_avatar_800x800_v01\.png"/);
+  assert.match(layout, /OG_IMAGE_PATH = "\/brand\/pattern_og_1200x630_v01\.png"/);
+  assert.match(vercelIgnore, /^public\/brand\/\*\*$/m);
+  assert.match(
+    vercelIgnore,
+    /^!public\/brand\/pattern_x_avatar_800x800_v01\.png$/m,
+  );
+  assert.match(
+    vercelIgnore,
+    /^!public\/brand\/pattern_og_1200x630_v01\.png$/m,
+  );
+  assert.match(vercelIgnore, /^!public\/og\.png$/m);
+  assert.doesNotMatch(vercelIgnore, /^public\/og\.png$/m);
+  assert.equal(avatar.byteLength, 45_238);
+  assert.equal(ogAlias.byteLength, 1_043_440);
+  assert.deepEqual(ogAlias, canonicalOg);
+});
